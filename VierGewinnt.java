@@ -7,33 +7,56 @@
  */
 public class VierGewinnt
 {
-    char[][] feld;
-    int turn;
-    boolean spieler;
+    String[][] feld;
+    int turn;//noch unbenutzt
+    boolean rotIstDran;
     
     /**
      * Konstruktor für Objekte der Klasse vierGewinnt
      */
     public VierGewinnt()
     {
-        feld = new char[6][7];
-    }
-
-    public void chipPlatzieren(int spalte)
-    {
-        
+        feld = new String[6][7];
+        rotIstDran = true;//Rot soll beginnen
     }
     
-    public int chipsInSpalte(int spalte)
+    /**
+     * Fügt einen Buchstaben (für eine Farbe) in der vorgegebenen
+     * Spalte auf der richtigen Höhe ein
+     * Autor(Tobias, Emre)
+     */
+    public void chipPlatzieren(int spalte)
     {
-        int count = 0;
-        for(int i=0; i<=6; i++)
+        if(spalte > 6||chipsInSpalte(spalte) == 6)//checkt ob der chip in einer existierenden Spalte platziert werden soll oder ob die Spalte schon voll ist
         {
-            if(getChar(feld[i][spalte]) )
+            
+        }
+        else if(rotIstDran)//wenn Rot dran ist wird "r" (fuer Rot) an den Platz eingefuegt
+        {
+            feld[5-chipsInSpalte(spalte)][spalte] = "R";
+            rotIstDran = false;
+        }
+        else//wenn nicht dann "G" (fuer Gelb)
+        {
+            feld[5-chipsInSpalte(spalte)][spalte] = "G";
+            rotIstDran = true;
+        }
+    }
+    
+    /**
+     * Gibt die Anzahl der belegten Platze in der Spalte zurueck
+     * Autor(Tobias, Emre)
+     */
+    private int chipsInSpalte(int spalte)
+    {
+        int anzahl = 0;
+        for(int i=0; i<=5; i++)
+        {
+            if(feld[i][spalte]=="R"||feld[i][spalte]=="G")
             {
-                count++;
+                anzahl++;
             }
         }
-        return count;
+        return anzahl;
     }
 }
