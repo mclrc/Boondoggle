@@ -7,7 +7,9 @@
  */
 public class VierGewinnt
 {
-    String[][] feld;
+    int[][] feld;
+    int rows = 6;
+    int columns = 7;
     int turn;//noch unbenutzt
     boolean rotIstDran;
     
@@ -16,7 +18,7 @@ public class VierGewinnt
      */
     public VierGewinnt()
     {
-        feld = new String[6][7];
+        feld = new int[6][7];
         rotIstDran = true;//Rot soll beginnen
     }
     
@@ -33,14 +35,74 @@ public class VierGewinnt
         }
         else if(rotIstDran)//wenn Rot dran ist wird "r" (fuer Rot) an den Platz eingefuegt
         {
-            feld[5-chipsInSpalte(spalte)][spalte] = "R";
+            feld[5-chipsInSpalte(spalte)][spalte] = 1;
             rotIstDran = false;
         }
         else//wenn nicht dann "G" (fuer Gelb)
         {
-            feld[5-chipsInSpalte(spalte)][spalte] = "G";
+            feld[5-chipsInSpalte(spalte)][spalte] = 2;
             rotIstDran = true;
         }
+    }
+
+    
+    /**
+     * Gibt zurück, ob das Spiel gewonnen wurde
+     *   0 = nein
+     *   1 = rot
+     *   2 = gelb
+     * Autor(Malte)
+     */    
+    public int gewonnen() 
+    {
+        // eine Reihe mit 4 x hintereinander
+        for (int i = 0; i < rows; i++) {
+            int rotCounter = 0, gelbCounter = 0;
+            for (int j = 0; j < columns; j++) {
+                if (feld[i][j]==1) {
+                    rotCounter++;
+                } else {
+                    rotCounter = 0;
+                }
+                if (rotCounter >= 4) {
+                    return 1; // rot
+                }
+
+                if (feld[i][j]==2) {
+                    gelbCounter++;
+                } else {
+                    gelbCounter = 0;
+                }
+                if (gelbCounter >= 4) {
+                    return 2; // gelb
+                }
+            }
+        }
+        
+        // eine Spalte mit 4 x hintereinander
+        for (int j = 0; j < columns; j++) {
+            int rotCounter = 0, gelbCounter = 0;
+            for (int i = 0; i < rows; i++) {
+                if (feld[i][j]==1) {
+                    rotCounter++;
+                } else {
+                    rotCounter = 0;
+                }
+                if (rotCounter >= 4) {
+                    return 1; // rot
+                }
+
+                if (feld[i][j]==2) {
+                    gelbCounter++;
+                } else {
+                    gelbCounter = 0;
+                }
+                if (gelbCounter >= 4) {
+                    return 2; // gelb
+                }
+            }
+        }
+        return 0;
     }
     
     /**
@@ -52,11 +114,24 @@ public class VierGewinnt
         int anzahl = 0;
         for(int i=0; i<=5; i++)
         {
-            if(feld[i][spalte]=="R"||feld[i][spalte]=="G")
+            if(feld[i][spalte]==1 || feld[i][spalte]==2)
             {
                 anzahl++;
             }
         }
         return anzahl;
+    }
+    
+    /**
+     * Gibt Feld nach System.out aus
+     * Autor(Malte)
+     */
+    public void feldAusgeben() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                System.out.print("" + feld[i][j]  + " ");
+            }
+            System.out.println();
+        }
     }
 }
