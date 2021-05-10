@@ -25,9 +25,10 @@ public class VierGewinnt
     /**
      * Fügt eine Zahl (für eine Farbe) in der vorgegebenen
      * Spalte auf der richtigen Höhe ein
+     * Spalte 0 ist ganz links, Spalte 6 ist ganz rechts
      * Autor(Tobias, Emre)
      */
-    public void chipPlatzieren(int spalte)//0 ist ganz links, 6 ist ganz rechts
+    public void chipPlatzieren(int spalte)
     {
         if(spalte > 6||chipsInSpalte(spalte) == 6)//checkt ob der chip in einer existierenden Spalte platziert werden soll oder ob die Spalte schon voll ist
         {
@@ -45,6 +46,10 @@ public class VierGewinnt
         }
     }
     
+    /**
+     * Checkt, ob der platzierte Chip eine vertikale Reihe von 4 bildet
+     * Autor (Emre, Tobias)
+     */
     public boolean vertikalGewonnen(int spalte)
     {
         if(chipsInSpalte(spalte) >= 4)
@@ -60,7 +65,12 @@ public class VierGewinnt
         else return false;
     }
     
-    public boolean diagonalLUROGewonnen(int spalte)//diagonal von links unten zu rechts oben
+    /**
+     * Checkt, ob der platzierte Chip eine diagonale Reihe 
+     * von links unten nach rechts oben von 4 bildet
+     * Autor (Tobias, Emre)
+     */
+    public boolean diagonalLUROGewonnen(int spalte)
     {
         int count = 0;
         int y = 6-chipsInSpalte(spalte);
@@ -70,14 +80,41 @@ public class VierGewinnt
         {
             y--;
             x++;
-        }//
-        while(y<6 && x>0)//solange im Feld
+        }//x und y nehmen die Koordinaten von ganz oben rechts in der Linie des platzierten Chips an
+        while(y<=5 && x>=0)//solange im Feld
         {
             if(feld[y][x] == farbe) count++;
-            else count = 0;
-            if(count == 4) return true;
+            else count = 0;//wenn ein Chip nicht die richtige Farbe hat wird  count auf 0 gesetzt da somit die Reihe unterbrochen wird
+            if(count == 4) return true;//wenn 4 in einer Reihe true (spiel gewonnen)
             y++;
             x--;
+        }
+        return false;
+    }
+    
+    /**
+     * Checkt, ob der platzierte Chip eine diagonale Reihe von 
+     * rechts unten nach links oben von 4 bildet
+     * Autor (Tobias, Emre)
+     */
+    public boolean diagonalRULOGewonnen(int spalte)
+    {
+        int count = 0;
+        int y = 6-chipsInSpalte(spalte);
+        int x = spalte;
+        int farbe = feld[y][x];
+        while(y>0 && x>0)//solange im Feld
+        {
+            y--;
+            x--;
+        }//x und y nehmen die Koordinaten von ganz oben links in der Linie des platzierten Chips an
+        while(y<=5 && x<=6)//solange im Feld
+        {
+            if(feld[y][x] == farbe) count++;
+            else count = 0;//wenn ein Chip nicht die richtige Farbe hat wird  count auf 0 gesetzt da somit die Reihe unterbrochen wird
+            if(count == 4) return true;//wenn 4 in einer Reihe true (spiel gewonnen)
+            y++;
+            x++;
         }
         return false;
     }
