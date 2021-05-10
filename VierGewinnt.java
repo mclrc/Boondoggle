@@ -23,7 +23,7 @@ public class VierGewinnt
     }
     
     /**
-     * Fügt einen Buchstaben (für eine Farbe) in der vorgegebenen
+     * Fügt eine Zahl (für eine Farbe) in der vorgegebenen
      * Spalte auf der richtigen Höhe ein
      * Autor(Tobias, Emre)
      */
@@ -47,23 +47,17 @@ public class VierGewinnt
     
     public boolean vertikalGewonnen(int spalte)
     {
-        int reihe = chipsInSpalte(spalte);
-        int farbe = feld[chipsInSpalte(spalte)][spalte];
-        if(feld[reihe][spalte] == farbe 
-        && feld[reihe-1][spalte] == farbe 
-        && feld[reihe-2][spalte] == farbe 
-        && feld[reihe-3][spalte] == farbe) return true;
-        else return false;
-    }
-    
-    public boolean vertikalGewonnen2(int spalte)
-    {
-        int reihe = chipsInSpalte(spalte);
-        
-        if(feld[reihe][spalte] == feld[chipsInSpalte(spalte)][spalte] 
-        && feld[reihe-1][spalte] == feld[chipsInSpalte(spalte)][spalte] 
-        && feld[reihe-2][spalte] == feld[chipsInSpalte(spalte)][spalte] 
-        && feld[reihe-3][spalte] == feld[chipsInSpalte(spalte)][spalte]) return true;
+        if(chipsInSpalte(spalte) >= 4)
+        {
+            int reihe = 6-chipsInSpalte(spalte);
+            int farbe = feld[6-chipsInSpalte(spalte)][spalte];
+            System.out.println(farbe);
+            if(feld[reihe][spalte] == farbe 
+            && feld[reihe+1][spalte] == farbe 
+            && feld[reihe+2][spalte] == farbe 
+            && feld[reihe+3][spalte] == farbe) return true;
+            else return false;
+        }
         else return false;
     }
     
@@ -128,9 +122,10 @@ public class VierGewinnt
     
     /**
      * Gibt die Anzahl der belegten Platze in der Spalte zurueck
+     * Wird auch benutzt um die Reihe eines platzierten Chips herauszufinden
      * Autor(Tobias, Emre)
      */
-    private int chipsInSpalte(int spalte)
+    public int chipsInSpalte(int spalte)
     {
         int anzahl = 0;
         for(int i=0; i<=5; i++)
