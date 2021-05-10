@@ -27,7 +27,7 @@ public class VierGewinnt
      * Spalte auf der richtigen Höhe ein
      * Autor(Tobias, Emre)
      */
-    public void chipPlatzieren(int spalte)
+    public void chipPlatzieren(int spalte)//0 ist ganz links, 6 ist ganz rechts
     {
         if(spalte > 6||chipsInSpalte(spalte) == 6)//checkt ob der chip in einer existierenden Spalte platziert werden soll oder ob die Spalte schon voll ist
         {
@@ -51,7 +51,6 @@ public class VierGewinnt
         {
             int reihe = 6-chipsInSpalte(spalte);
             int farbe = feld[6-chipsInSpalte(spalte)][spalte];
-            System.out.println(farbe);
             if(feld[reihe][spalte] == farbe 
             && feld[reihe+1][spalte] == farbe 
             && feld[reihe+2][spalte] == farbe 
@@ -59,6 +58,28 @@ public class VierGewinnt
             else return false;
         }
         else return false;
+    }
+    
+    public boolean diagonalLUROGewonnen(int spalte)//diagonal von links unten zu rechts oben
+    {
+        int count = 0;
+        int y = 6-chipsInSpalte(spalte);
+        int x = spalte;
+        int farbe = feld[y][x];
+        while(y>0 && x<6)//solange im Feld
+        {
+            y--;
+            x++;
+        }//
+        while(y<6 && x>0)//solange im Feld
+        {
+            if(feld[y][x] == farbe) count++;
+            else count = 0;
+            if(count == 4) return true;
+            y++;
+            x--;
+        }
+        return false;
     }
     
     /**
