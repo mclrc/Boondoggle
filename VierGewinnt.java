@@ -44,7 +44,6 @@ public class VierGewinnt
             rotIstDran = true;
         }
     }
-
     
     /**
      * Gibt zurück, ob das Spiel gewonnen wurde
