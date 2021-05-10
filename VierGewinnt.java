@@ -33,18 +33,39 @@ public class VierGewinnt
         {
             
         }
-        else if(rotIstDran)//wenn Rot dran ist wird "r" (fuer Rot) an den Platz eingefuegt
+        else if(rotIstDran)//wenn Rot dran ist wird 1 (fuer Rot) an den Platz eingefuegt
         {
             feld[5-chipsInSpalte(spalte)][spalte] = 1;
             rotIstDran = false;
         }
-        else//wenn nicht dann "G" (fuer Gelb)
+        else//wenn nicht dann 2 (fuer Gelb)
         {
             feld[5-chipsInSpalte(spalte)][spalte] = 2;
             rotIstDran = true;
         }
     }
-
+    
+    public boolean vertikalGewonnen(int spalte)
+    {
+        int reihe = chipsInSpalte(spalte);
+        int farbe = feld[chipsInSpalte(spalte)][spalte];
+        if(feld[reihe][spalte] == farbe 
+        && feld[reihe-1][spalte] == farbe 
+        && feld[reihe-2][spalte] == farbe 
+        && feld[reihe-3][spalte] == farbe) return true;
+        else return false;
+    }
+    
+    public boolean vertikalGewonnen2(int spalte)
+    {
+        int reihe = chipsInSpalte(spalte);
+        
+        if(feld[reihe][spalte] == feld[chipsInSpalte(spalte)][spalte] 
+        && feld[reihe-1][spalte] == feld[chipsInSpalte(spalte)][spalte] 
+        && feld[reihe-2][spalte] == feld[chipsInSpalte(spalte)][spalte] 
+        && feld[reihe-3][spalte] == feld[chipsInSpalte(spalte)][spalte]) return true;
+        else return false;
+    }
     
     /**
      * Gibt zurück, ob das Spiel gewonnen wurde
