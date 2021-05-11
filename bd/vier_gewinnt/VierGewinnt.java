@@ -47,6 +47,33 @@ public class VierGewinnt
     }
     
     /**
+     * Gibt die Anzahl der belegten Platze in der Spalte zurueck
+     * Wird auch benutzt um die Reihe eines platzierten Chips herauszufinden
+     * Autor(Tobias, Emre)
+     */
+    public int chipsInSpalte(int spalte)
+    {
+        int anzahl = 0;
+        for(int i=0; i<=5; i++)
+        {
+            if(feld[i][spalte]==1 || feld[i][spalte]==2)
+            {
+                anzahl++;
+            }
+        }
+        return anzahl;
+    }
+    
+    public boolean zugGewonnen(int spalte)
+    {
+        if(vertikalGewonnen(spalte)) return true;
+        else if(horizontalGewonnen(spalte)) return true;
+        else if(diagonalLUROGewonnen(spalte)) return true;
+        else if(diagonalRULOGewonnen(spalte)) return true;
+        else return false;
+    }
+    
+    /**
      * Checkt, ob der platzierte Chip eine vertikale Reihe von 4 bildet
      * Autor (Emre, Tobias)
      */
@@ -63,6 +90,31 @@ public class VierGewinnt
             else return false;
         }
         else return false;
+    }
+    
+    /**
+     * Checkt, ob der platzierte Chip eine horizontale Reihe von
+     * 4 bildet
+     * Autor (Tobias, Emre)
+     */
+    public boolean horizontalGewonnen(int spalte)
+    {
+        int count = 0;
+        int x = spalte;
+        int y = 6-chipsInSpalte(spalte);
+        int farbe = feld[y][x];
+        while(x>0)
+        {
+            x--;
+        }
+        while(x<=6)
+        {
+            if(feld[y][x] == farbe) count++;
+            else count = 0;
+            if(count == 4) return true;
+            x++;
+        }
+        return false;
     }
     
     /**
@@ -118,36 +170,13 @@ public class VierGewinnt
         }
         return false;
     }
-    /**
-    *Prüft, ob der Chip eine Reihe mit 4 horizontal verfollständigt hat
-    * Autor(Neele)
-    */
-     public boolean horizontalGewonnen(int reihe)
-    {
-        int spalte = chipsInSpalte(reihe);
-        int farbe = feld[chipsInSpalte(reihe)][reihe];
-        if(chipsInSpalte(reihe)>=4){
-            if (feld[reihe][spalte] == farbe
-            && feld[reihe][spalte+1] == farbe
-            && feld[reihe][spalte+2] == farbe
-            && feld[reihe][spalte+3] == farbe)
-                return true;
-            else if (feld[reihe][spalte] == farbe
-            && feld[reihe][spalte-1] == farbe
-            && feld[reihe][spalte-2] == farbe
-            && feld[reihe][spalte-3] == farbe)
-                return true;
-            else return false;
-        }
-        else return false;
-    }
     
     /**
      * Gibt zurück, ob das Spiel gewonnen wurde
      *   0 = nein
      *   1 = rot
      *   2 = gelb
-     * Autor(Malte)
+     * Autor(Malte, Neele)
      */    
     public int gewonnen() 
     {
@@ -202,26 +231,8 @@ public class VierGewinnt
     }
     
     /**
-     * Gibt die Anzahl der belegten Platze in der Spalte zurueck
-     * Wird auch benutzt um die Reihe eines platzierten Chips herauszufinden
-     * Autor(Tobias, Emre)
-     */
-    public int chipsInSpalte(int spalte)
-    {
-        int anzahl = 0;
-        for(int i=0; i<=5; i++)
-        {
-            if(feld[i][spalte]==1 || feld[i][spalte]==2)
-            {
-                anzahl++;
-            }
-        }
-        return anzahl;
-    }
-    
-    /**
      * Gibt Feld nach System.out aus
-     * Autor(Malte)
+     * Autor(Malte, Neele)
      */
     public void feldAusgeben() {
         for (int i = 0; i < rows; i++) {
@@ -234,7 +245,7 @@ public class VierGewinnt
     
     /**
      * Gibt an welcher Spieler gerade am Zug ist
-     * Autor(Malte)
+     * Autor(Malte, Neele)
      */
     public String istAmZug() {
         if(rotIstDran) {
