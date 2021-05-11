@@ -5,119 +5,190 @@ import java.net.*;
 import java.util.function.Consumer;
 
 class Connection {
+    // Socket fuer die eigentliche Verbindung
     Socket socket = null;
-    ServerSocket serverSocket = null;
+
+    // IO-Streams fuer den socket
     private DataOutputStream out = null;
     private DataInputStream in = null;
+    
+    // ServerSocket zum annehmen von Verbindungen
+    ServerSocket serverSocket = null;
 
+    // Lambda - Wird bei Empfang einer Nachricht aufgerufen
     private Consumer<String> msgCallback;
 
+    // Schleifenvariable fuer Listener-Thread
     private boolean isListening = false;
 
+    /**
+     * Setze den bei Empfang einer Nachricht aufzurufenden Callback
+     * @param msgCallback
+     *  Der neue Callback
+     */
     public void setMsgCallback(Consumer<String> msgCallback)
     {
         this.msgCallback = msgCallback;
     }
 
+    /**
+     * Versuche eine Verbindung zu initiieren
+     * @param ip
+     *  IP des anderen Rechners
+     * @param port
+     *  Port, auf dem der andere Rechner verbindungen Akzeptiert
+     * @throws SocketException
+     *  Tritt auf, wenn die Verbindung schon verwendet wird oder gerade auf Verbindungsanfragen hoert
+     */
     public void connect(String ip, int port) throws SocketException
     {
-        if (socket != null && !socket.isClosed())
+        // Wenn schon eine Verbindung besteht, Exception 
+        if (socket != null && !socket.isClosed()) 
             throw new SocketException("Connection already in use");
-        else if (serverSocket != null && !serverSocket.isClosed())
+        
+        // Wenn auf Anfragen gehoert wird, Exception
+        else if (serverSocket != null && !serverSocket.isClosed()) 
             throw new SocketException("Currently accepting other connections");
 
         try
         {
+            // Initialisiere Socket
             socket = new Socket(ip, port);
+            // Extrahiere Streams
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
+            // Anfangen, auf Nachrichten zu hoeren
             listen();
         }
         catch(Exception e) { System.out.println(e); }
     }
 
+    /**
+     * Akzeptiere die naechste Verbindungsanfrage
+     * @param port
+     *  Port, auf dem die Anfrage akzeptiert werden soll
+     * @throws SocketException
+     *  Tritt auf, wenn bereits eine Verbindung besteht
+     */
     public void acceptConnection(int port) throws SocketException
     {
+        // Wenn schon eine Verbindung besteht, Exception
         if (socket != null && !socket.isClosed())
             throw new SocketException("Connection already in use");
 
         try
         {
+            // Initialisiere ServerSocket
             serverSocket = new ServerSocket(port);
 
+            // Seperater Thread, denn serverSocket.accept blockiert
             new Thread(() -> {
-                    try
-                    {
-                        socket = serverSocket.accept();
-                        out = new DataOutputStream(socket.getOutputStream());
-                        in = new DataInputStream(socket.getInputStream());
+                try
+                {
+                    // Akzeptiere Verbindung und speichere Socket
+                    socket = serverSocket.accept();
+                    // Extrahiere Streams
+                    out = new DataOutputStream(socket.getOutputStream());
+                    in = new DataInputStream(socket.getInputStream());
 
-                        serverSocket.close();
+                    // Schliesse ServerSocket und gebe Listening-Port frei 
+                    serverSocket.close();
 
-                        listen();
-                    }
-                    catch(Exception e) { System.out.println(e); }
-                }).start();
+                    // Anfangen, auf Nachrichten zu hoeren
+                    listen();
+                }
+                catch(Exception e) { System.out.println(e); }
+            }).start();
         }
         catch(Exception e) { System.out.println(e); }
     }
 
+    /**
+     * Hoere auf, Verbindungen zu Akzeptieren
+     */
     public void stopAcceptingConnection()
     {
+        // Wenn ServerSocket nicht besteht oder geschlossen ist, ist nichts zu tun
         if (serverSocket == null || serverSocket.isClosed()) return;
+
+        // ServerSocket schliessen
         try{ serverSocket.close(); }
         catch(IOException e) { System.out.println(e); }
     }
 
-    public void listen() throws SocketException
+    private void listen() throws SocketException
     {
+        // Wenn keine Verbindung besteht, Exception
         if (socket == null || socket.isClosed())
             throw new SocketException("Not connected");
 
+        // Schleifenvariable zuruecksetzen
         isListening = true;
 
         System.out.println("Listening");
 
+        // Listener-Thread - Denn in.readUTF blockiert
         new Thread(() -> {
-                while (!socket.isClosed() && isListening)
+            while (!socket.isClosed() && isListening)
+            {
+                // Nachrichten aus Stream einlesen und Callback aufrufen
+                try { msgCallback.accept(in.readUTF()); }
+                catch(EOFException e) // End-of-file - Verbindung unterbrochen
                 {
-                    try { msgCallback.accept(in.readUTF()); }
-                    catch(EOFException e) 
-                    {
-                        System.out.println("Connection closed");
-                        isListening = false;
-                    }
-                    catch(IOException e) { close(); }
+                    System.out.println("Connection closed");
+                    isListening = false;
                 }
-            }).start();
+                catch(IOException e) // Anderer Fehler. Verbindung schliessen
+                {
+                    System.out.println(e);
+                    close();
+                }
+            }
+        }).start();
     }
 
+    /**
+     * Sende eine Nachricht
+     * @param data
+     *  Zu sendende Nachricht
+     * @throws SocketException
+     *  Tritt auf, wenn keine Verbindung besteht
+     */
     public void send(String data) throws SocketException
     {
+        // Wenn keien Verbindung besteht, Exception
         if (socket == null || socket.isClosed())
             throw new SocketException("Not connected");
 
-        System.out.println("sending " + data);
+        System.out.println("Sending " + data);
 
+        // Daten in Stream schreiben
         try { out.writeUTF(data); }
-        catch(IOException e)
+        catch(IOException e) // Fehler beim Schreiben. Verbindung schliessen
         {
             System.out.println(e);
             close();
         }
     }
 
+    /**
+     * Beende die Verbindung. Hoere auf, Anfragen zu akzeptieren
+     */
     public void close()
     {
+        // Ggf. ServerSocket schliessen
         if (serverSocket != null && !serverSocket.isClosed())
             try { serverSocket.close(); }
             catch (Exception e) { System.out.println(e); }
+        // Wenn keine Verbindung besteht, ist nichts zu tun
         if (socket == null || socket.isClosed()) return;
 
+        // Schleifenvariable aktualisieren
         isListening = false;
 
         try
         {
+            // Verbindung schliessen
             socket.close();
             in.close();
             out.close();
