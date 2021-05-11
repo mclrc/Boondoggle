@@ -118,6 +118,29 @@ public class VierGewinnt
         }
         return false;
     }
+    /**
+    *Prüft, ob der Chip eine Reihe mit 4 horizontal verfollständigt hat
+    * Autor(Neele)
+    */
+     public boolean horizontalGewonnen(int reihe)
+    {
+        int spalte = chipsInSpalte(reihe);
+        int farbe = feld[chipsInSpalte(reihe)][reihe];
+        if(chipsInSpalte(reihe)>=4){
+            if (feld[reihe][spalte] == farbe
+            && feld[reihe][spalte+1] == farbe
+            && feld[reihe][spalte+2] == farbe
+            && feld[reihe][spalte+3] == farbe)
+                return true;
+            else if (feld[reihe][spalte] == farbe
+            && feld[reihe][spalte-1] == farbe
+            && feld[reihe][spalte-2] == farbe
+            && feld[reihe][spalte-3] == farbe)
+                return true;
+            else return false;
+        }
+        else return false;
+    }
     
     /**
      * Gibt zurück, ob das Spiel gewonnen wurde
