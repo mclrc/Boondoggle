@@ -1,3 +1,5 @@
+package bd.vier_gewinnt;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -38,7 +40,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
 
         // Hintergrundbild
         setLayout(new BorderLayout());
-        JLabel background=new JLabel(new ImageIcon("Background01.png"));
+        JLabel background=new JLabel(new ImageIcon("img/Background01.png"));
         add(background);
         background.setLayout(null);
 
@@ -132,7 +134,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         {
             // imageBackground = ImageIO.read(getClass().getResource("4gewinnt.png"));
             try {
-                imageBackground = ImageIO.read(new File("4gewinnt.png"));
+                imageBackground = ImageIO.read(new File("img/4gewinnt.png"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
