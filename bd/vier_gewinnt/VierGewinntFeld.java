@@ -36,10 +36,8 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
+        
         // Hintergrundbild
-        setLayout(new BorderLayout());
         JLabel background=new JLabel(new ImageIcon("img/Background01.png"));
         add(background);
         background.setLayout(null);
@@ -58,13 +56,13 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         lblAktiverSpieler.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblAktiverSpieler.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         lblAktiverSpieler.setBounds(200, 60, 400, 50);
-        lblAktiverSpieler.setText("\"name\" ist am Zug");
+        lblAktiverSpieler.setText("Spieler " + spiel.istAmZug() + " ist am Zug");
         lblAktiverSpieler.setForeground(Color.BLACK);
 
         // Spierlfeld als Grafik 600x334px
         // JLabel lblFeld = new JLabel(new ImageIcon("4gewinnt.png"));
         // lblFeld.setBounds(100, 93, 600, 334);
-        JPanel panBrett = new VierGewinntPanel();
+        JPanel panBrett = new VierGewinntPanel(lblAktiverSpieler);
         panBrett.setBounds(261, 123, 288, 304); // Bild 288x304px
 
         JButton btnZurueck = new JButton("Zurück");
@@ -115,9 +113,6 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
     
     public class VierGewinntPanel extends JPanel implements MouseListener
     {
-        private int width = 800;
-        private int height = 455;
-        // private int [][] field;
         private int rows = 6; 
         private int columns = 7;
         private BufferedImage imageBackground;
@@ -126,12 +121,13 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         private int xDelta = 5;
         private int yDelta = 20;
         private int size = 31;
-
+        private JLabel lblAktiverSpieler;
         /**
          * Konstruktor für Objekte der Klasse VierGewinntFeld
          */
-        public VierGewinntPanel()
+        public VierGewinntPanel(JLabel lblAktiverSpieler)
         {
+            this.lblAktiverSpieler = lblAktiverSpieler;
             // imageBackground = ImageIO.read(getClass().getResource("4gewinnt.png"));
             try {
                 imageBackground = ImageIO.read(new File("img/4gewinnt.png"));
@@ -139,7 +135,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
                 e.printStackTrace();
             }
 
-            spiel.feldAusgeben();
+            // spiel.feldAusgeben();
             addMouseListener(this);
         }
 
@@ -153,6 +149,8 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
 
             xPos = xStart;
             yPos = yStart;
+            
+            // im Spielfeld die Chips malen
             for(int i = 0; i < rows; i++) { // solange die Variable i kleiner ist als "rows":
                 for(int j = 0; j < columns; j++) { // solange die Variable j kleiner ist als "columns":
                     if(spiel.feld[i][j] == 0) {
@@ -172,19 +170,23 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             }
         }
 
+        // Wird aufgerufen bei Mausklick
         public void mouseClicked(MouseEvent e) {
             int xPos = e.getX(); // bei Benutzung der linken Maustaste wird die x-Position gespeichert
-            int spalte = Math.min(columns - 1, (xPos - xStart) / (size + xDelta)); //  Spalte wird berechnet 
+            int spalte = Math.min(columns - 1, (xPos - xStart) / (size + xDelta)); //  Spalte wird berechnet // Sonderfall bei Spalte rechts neben dem Spielfeld: wird durch Math.min abgefangen
 
-            System.out.println("mouseClicked: " + xPos + ", " + spalte); // in der Konsole wird die xPosition und die dazugehörige Spalte ausgegeben
-            spiel.chipPlatzieren(spalte); // Cip wird in der bestimmten Spalte platziert
-            spiel.feldAusgeben(); // das aktuelle Spielfeld wird ausgegeben
+            // System.out.println("mouseClicked: " + xPos + ", " + spalte); // in der Konsole wird die xPosition und die dazugehörige Spalte ausgegeben
+            spiel.chipPlatzieren(spalte); // Chip wird in der bestimmten Spalte platziert
+            // spiel.feldAusgeben();
 
             if (spiel.gewonnen() > 0) { // wenn ein/e Spieler*in gewonnen hat, wird dies ausgegeben
                 System.out.println("Spieler " + spiel.gewonnen() + " hat gewonnen!");
             }
+            else {
+                lblAktiverSpieler.setText("Spieler " + spiel.istAmZug() + " ist am Zug");
+            }
 
-            repaint(); // zeichnung wird aktuallisiert 
+            repaint(); // ruft paintComponent um den platzierten Chip darzustellen
         }
 
         public void mousePressed(MouseEvent e) {
@@ -202,6 +204,5 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         }
 
     }
-
 }
 

@@ -208,4 +208,17 @@ public class VierGewinnt
             System.out.println();
         }
     }
+    
+    /**
+     * Gibt an welcher Spieler gerade am Zug ist
+     * Autor(Malte)
+     */
+    public String istAmZug() {
+        if(rotIstDran) {
+            return "1 / rot";
+        }
+        else {
+            return "2 / gelb";
+        }
+    }
 }
