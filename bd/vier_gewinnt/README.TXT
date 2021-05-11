@@ -6,3 +6,4 @@ Anleitung zum 4 Gewinnt Minispiel:
 * Wenn Sie nun den ersten Chip platzieren wollen, drücken Sie nun mit der
   linken Maustaste auf die Reihe, auf der Sie den Chip platzieren wollen
 * Dieser wird nun automatisch an der unterst möglichen Stelle platziert
+  und Sie können Spielen!
