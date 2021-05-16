@@ -37,12 +37,18 @@ public class VierGewinnt
         else if(rotIstDran)//wenn Rot dran ist wird 1 (fuer Rot) an den Platz eingefuegt
         {
             feld[5-chipsInSpalte(spalte)][spalte] = 1;
-            rotIstDran = false;
+            
+            if(!zugGewonnen(spalte)) {
+                rotIstDran = false;
+            }
         }
         else//wenn nicht dann 2 (fuer Gelb)
         {
             feld[5-chipsInSpalte(spalte)][spalte] = 2;
-            rotIstDran = true;
+            
+            if(!zugGewonnen(spalte)) {
+                rotIstDran = true;
+            }
         }
     }
     
