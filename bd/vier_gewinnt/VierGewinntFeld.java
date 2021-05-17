@@ -92,7 +92,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         background.add(btnAnleitung);
          */
 
-       
+        
         background.add(lblSpielname);
         background.add(lblAktiverSpieler);
         // background.add(lblFeld);

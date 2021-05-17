@@ -238,6 +238,7 @@ public class VierGewinnt
     
     /**
      * Gibt Feld nach System.out aus
+     * Ist gut für erste Tests
      * Autor(Malte, Neele)
      */
     public void feldAusgeben() {
