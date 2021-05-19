@@ -186,8 +186,8 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             // System.out.println("mouseClicked: " + xPos + ", " + spalte); // in der Konsole wird die xPosition und die dazugehörige Spalte ausgegeben
             spiel.chipPlatzieren(spalte); // Chip wird in der bestimmten Spalte platziert
             // spiel.feldAusgeben();
-
-            if(spiel.anzahlChips < 43) {
+            
+            if(!spiel.istSpielfeldVoll()) {
                 if (spiel.zugGewonnen(spalte)) { // wenn ein/e Spieler*in gewonnen hat, wird dies ausgegeben
                     spielAktiv = false;
                     lblAktiverSpieler.setForeground(Color.GREEN);

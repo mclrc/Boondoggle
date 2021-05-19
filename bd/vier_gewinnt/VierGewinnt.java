@@ -8,6 +8,7 @@ package bd.vier_gewinnt;
 public class VierGewinnt
 {
     int[][] feld;
+    int feldgroesse=0;
     int rows = 6;
     int columns = 7;
     int turn;//noch unbenutzt
@@ -20,6 +21,7 @@ public class VierGewinnt
     public VierGewinnt()
     {
         feld = new int[6][7];
+        feldgroesse=6*7;
         rotIstDran = true;//Rot soll beginnen
     }
 
@@ -55,6 +57,15 @@ public class VierGewinnt
         anzahlChips++;
     }
 
+    public boolean istSpielfeldVoll() {
+        if(anzahlChips < feldgroesse) {
+            return false;
+        } 
+        else {
+            return true;
+        }
+    }
+    
     /**
      * Gibt die Anzahl der belegten Platze in der Spalte zurueck
      * Wird auch benutzt um die Reihe eines platzierten Chips herauszufinden
