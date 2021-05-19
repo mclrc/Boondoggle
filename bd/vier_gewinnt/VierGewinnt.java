@@ -12,7 +12,8 @@ public class VierGewinnt
     int columns = 7;
     int turn;//noch unbenutzt
     boolean rotIstDran;
-    
+    int anzahlChips = 0;
+
     /**
      * Konstruktor für Objekte der Klasse vierGewinnt
      */
@@ -21,7 +22,7 @@ public class VierGewinnt
         feld = new int[6][7];
         rotIstDran = true;//Rot soll beginnen
     }
-    
+
     /**
      * Fügt eine Zahl (für eine Farbe) in der vorgegebenen
      * Spalte auf der richtigen Höhe ein
@@ -32,7 +33,7 @@ public class VierGewinnt
     {
         if(spalte > 6||chipsInSpalte(spalte) == 6)//checkt ob der chip in einer existierenden Spalte platziert werden soll oder ob die Spalte schon voll ist
         {
-            
+
         }
         else if(rotIstDran)//wenn Rot dran ist wird 1 (fuer Rot) an den Platz eingefuegt
         {
@@ -45,13 +46,15 @@ public class VierGewinnt
         else//wenn nicht dann 2 (fuer Gelb)
         {
             feld[5-chipsInSpalte(spalte)][spalte] = 2;
-            
+
             if(!zugGewonnen(spalte)) {
                 rotIstDran = true;
             }
         }
+        
+        anzahlChips++;
     }
-    
+
     /**
      * Gibt die Anzahl der belegten Platze in der Spalte zurueck
      * Wird auch benutzt um die Reihe eines platzierten Chips herauszufinden
@@ -69,7 +72,7 @@ public class VierGewinnt
         }
         return anzahl;
     }
-    
+
     public boolean zugGewonnen(int spalte)
     {
         if(vertikalGewonnen(spalte)) return true;
@@ -78,7 +81,7 @@ public class VierGewinnt
         else if(diagonalRULOGewonnen(spalte)) return true;
         else return false;
     }
-    
+
     /**
      * Checkt, ob der platzierte Chip eine vertikale Reihe von 4 bildet
      * Autor (Emre, Tobias)
@@ -97,7 +100,7 @@ public class VierGewinnt
         }
         else return false;
     }
-    
+
     /**
      * Checkt, ob der platzierte Chip eine horizontale Reihe von
      * 4 bildet
@@ -122,7 +125,7 @@ public class VierGewinnt
         }
         return false;
     }
-    
+
     /**
      * Checkt, ob der platzierte Chip eine diagonale Reihe 
      * von links unten nach rechts oben von 4 bildet
@@ -149,7 +152,7 @@ public class VierGewinnt
         }
         return false;
     }
-    
+
     /**
      * Checkt, ob der platzierte Chip eine diagonale Reihe von 
      * rechts unten nach links oben von 4 bildet
@@ -176,66 +179,7 @@ public class VierGewinnt
         }
         return false;
     }
-    
-    /**
-     * Gibt zurück, ob das Spiel gewonnen wurde
-     *   0 = nein
-     *   1 = rot
-     *   2 = gelb
-     * Autor(Malte, Neele)
-     */    
-    public int gewonnen() 
-    {
-        // eine Reihe mit 4 x hintereinander
-        for (int i = 0; i < rows; i++) {
-            int rotCounter = 0, gelbCounter = 0;
-            for (int j = 0; j < columns; j++) {
-                if (feld[i][j]==1) {
-                    rotCounter++;
-                } else {
-                    rotCounter = 0;
-                }
-                if (rotCounter >= 4) {
-                    return 1; // rot
-                }
 
-                if (feld[i][j]==2) {
-                    gelbCounter++;
-                } else {
-                    gelbCounter = 0;
-                }
-                if (gelbCounter >= 4) {
-                    return 2; // gelb
-                }
-            }
-        }
-        
-        // eine Spalte mit 4 x hintereinander
-        for (int j = 0; j < columns; j++) {
-            int rotCounter = 0, gelbCounter = 0;
-            for (int i = 0; i < rows; i++) {
-                if (feld[i][j]==1) {
-                    rotCounter++;
-                } else {
-                    rotCounter = 0;
-                }
-                if (rotCounter >= 4) {
-                    return 1; // rot
-                }
-
-                if (feld[i][j]==2) {
-                    gelbCounter++;
-                } else {
-                    gelbCounter = 0;
-                }
-                if (gelbCounter >= 4) {
-                    return 2; // gelb
-                }
-            }
-        }
-        return 0;
-    }
-    
     /**
      * Gibt Feld nach System.out aus
      * Ist gut für erste Tests
@@ -249,7 +193,7 @@ public class VierGewinnt
             System.out.println();
         }
     }
-    
+
     /**
      * Gibt an welcher Spieler gerade am Zug ist
      * Autor(Malte, Neele)

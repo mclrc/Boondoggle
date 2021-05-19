@@ -187,14 +187,22 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             spiel.chipPlatzieren(spalte); // Chip wird in der bestimmten Spalte platziert
             // spiel.feldAusgeben();
 
-            if (spiel.zugGewonnen(spalte)) { // wenn ein/e Spieler*in gewonnen hat, wird dies ausgegeben
-                spielAktiv = false;
-                lblAktiverSpieler.setForeground(Color.GREEN);
-                lblAktiverSpieler.setText("Spieler " + spiel.istAmZug() + " hat gewonnen");
+            if(spiel.anzahlChips < 43) {
+                if (spiel.zugGewonnen(spalte)) { // wenn ein/e Spieler*in gewonnen hat, wird dies ausgegeben
+                    spielAktiv = false;
+                    lblAktiverSpieler.setForeground(Color.GREEN);
+                    lblAktiverSpieler.setText("Spieler " + spiel.istAmZug() + " hat gewonnen");
+                }
+                else {
+                    lblAktiverSpieler.setText("Spieler " + spiel.istAmZug() + " ist am Zug");
+                }    
             }
             else {
-                lblAktiverSpieler.setText("Spieler " + spiel.istAmZug() + " ist am Zug");
+                spielAktiv = false;
+                lblAktiverSpieler.setForeground(Color.GREEN);
+                lblAktiverSpieler.setText("Das Spielfeld ist voll mit Chips: Unentschieden!");
             }
+            
 
             repaint(); // ruft paintComponent um den platzierten Chip darzustellen
         }
