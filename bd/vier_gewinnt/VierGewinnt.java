@@ -8,7 +8,7 @@ package bd.vier_gewinnt;
 public class VierGewinnt
 {
     int[][] feld;
-    int feldgroesse=0;
+    int feldgroesse=6*7;
     int rows = 6;
     int columns = 7;
     int turn;//noch unbenutzt
@@ -21,7 +21,6 @@ public class VierGewinnt
     public VierGewinnt()
     {
         feld = new int[6][7];
-        feldgroesse=6*7;
         rotIstDran = true;//Rot soll beginnen
     }
 
@@ -193,7 +192,7 @@ public class VierGewinnt
 
     /**
      * Gibt Feld nach System.out aus
-     * Ist gut für erste Tests
+     * Wurde benutzt für erste Tests
      * Autor(Malte, Neele)
      */
     public void feldAusgeben() {
