@@ -7,7 +7,7 @@ package bd.vier_gewinnt;
  */
 public class VierGewinnt
 {
-    int[][] feld;
+    int[][] feld; // Chip[][] feld;
     int feldgroesse=6*7;
     int rows = 6;
     int columns = 7;
@@ -20,7 +20,7 @@ public class VierGewinnt
      */
     public VierGewinnt()
     {
-        feld = new int[6][7];
+        feld = new int[6][7]; // new Chip
         rotIstDran = true;//Rot soll beginnen
     }
 
@@ -34,11 +34,12 @@ public class VierGewinnt
     {
         if(spalte > 6||chipsInSpalte(spalte) == 6)//checkt ob der chip in einer existierenden Spalte platziert werden soll oder ob die Spalte schon voll ist
         {
-
+            return;
         }
-        else if(rotIstDran)//wenn Rot dran ist wird 1 (fuer Rot) an den Platz eingefuegt
+        
+        if(rotIstDran)//wenn Rot dran ist wird 1 (fuer Rot) an den Platz eingefuegt
         {
-            feld[5-chipsInSpalte(spalte)][spalte] = 1;
+            feld[5-chipsInSpalte(spalte)][spalte] = 1; // new Chip(farbe/Chip.rot);
             
             if(!zugGewonnen(spalte)) {
                 rotIstDran = false;
@@ -46,7 +47,7 @@ public class VierGewinnt
         }
         else//wenn nicht dann 2 (fuer Gelb)
         {
-            feld[5-chipsInSpalte(spalte)][spalte] = 2;
+            feld[5-chipsInSpalte(spalte)][spalte] = 2; // new Chip(farbe/Chip.gelb);
 
             if(!zugGewonnen(spalte)) {
                 rotIstDran = true;
@@ -75,7 +76,7 @@ public class VierGewinnt
         int anzahl = 0;
         for(int i=0; i<=5; i++)
         {
-            if(feld[i][spalte]==1 || feld[i][spalte]==2)
+            if(feld[i][spalte]==1 || feld[i][spalte]==2) // != null
             {
                 anzahl++;
             }
@@ -102,7 +103,7 @@ public class VierGewinnt
         {
             int reihe = 6-chipsInSpalte(spalte);
             int farbe = feld[6-chipsInSpalte(spalte)][spalte];
-            if(feld[reihe][spalte] == farbe 
+            if(feld[reihe][spalte] == farbe // if != null && Chip.getFarbe()
             && feld[reihe+1][spalte] == farbe 
             && feld[reihe+2][spalte] == farbe 
             && feld[reihe+3][spalte] == farbe) return true;

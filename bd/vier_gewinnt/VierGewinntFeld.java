@@ -187,6 +187,8 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             spiel.chipPlatzieren(spalte); // Chip wird in der bestimmten Spalte platziert
             // spiel.feldAusgeben();
             
+            // System.out.println(spiel.anzahlChips);
+            // System.out.println(spiel.feldgroesse);
             if(!spiel.istSpielfeldVoll()) {
                 if (spiel.zugGewonnen(spalte)) { // wenn ein/e Spieler*in gewonnen hat, wird dies ausgegeben
                     spielAktiv = false;
@@ -200,7 +202,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             else {
                 spielAktiv = false;
                 lblAktiverSpieler.setForeground(Color.GREEN);
-                lblAktiverSpieler.setText("Das Spielfeld ist voll mit Chips: Unentschieden!");
+                lblAktiverSpieler.setText("Das Spielfeld ist voll: Unentschieden!");
             }
             
 
