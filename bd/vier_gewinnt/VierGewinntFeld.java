@@ -157,10 +157,10 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             // im Spielfeld die Chips malen
             for(int i = 0; i < rows; i++) { // solange die Variable i kleiner ist als "rows":
                 for(int j = 0; j < columns; j++) { // solange die Variable j kleiner ist als "columns":
-                    if(spiel.feld[i][j] == 0) {
+                    if(spiel.spielfeld[i][j] == null) {
                         // nichts darstellen
                     } else {
-                        if(spiel.feld[i][j] == 1) { // wenn an dem Feld der Position [i][j] der Wert 1 beträgt
+                        if(spiel.spielfeld[i][j].getFarbe() == 1) { // wenn an dem Feld der Position [i][j] der Wert 1 beträgt
                             g.setColor(Color.red); // das Feld wird rot dargestellt
                         } else { // wenn der Wert > 1 ist
                             g.setColor(Color.yellow); // das Feld wird gelb dargestellt

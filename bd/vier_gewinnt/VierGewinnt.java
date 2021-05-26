@@ -7,11 +7,10 @@ package bd.vier_gewinnt;
  */
 public class VierGewinnt
 {
-    int[][] feld; // Chip[][] feld;
+    public Chip[][] spielfeld; 
     int feldgroesse=6*7;
     int rows = 6;
     int columns = 7;
-    int turn;//noch unbenutzt
     boolean rotIstDran;
     int anzahlChips = 0;
 
@@ -20,7 +19,7 @@ public class VierGewinnt
      */
     public VierGewinnt()
     {
-        feld = new int[6][7]; // new Chip
+        spielfeld = new Chip[6][7]; 
         rotIstDran = true;//Rot soll beginnen
     }
 
@@ -37,17 +36,17 @@ public class VierGewinnt
             return;
         }
         
-        if(rotIstDran)//wenn Rot dran ist wird 1 (fuer Rot) an den Platz eingefuegt
+        if(rotIstDran)//wenn Rot dran ist wird ein roter Chip an dem Platz eingefuegt
         {
-            feld[5-chipsInSpalte(spalte)][spalte] = 1; // new Chip(farbe/Chip.rot);
+            spielfeld[5-chipsInSpalte(spalte)][spalte] = new Chip(1); 
             
             if(!zugGewonnen(spalte)) {
                 rotIstDran = false;
             }
         }
-        else//wenn nicht dann 2 (fuer Gelb)
+        else//wenn nicht dann ein gelber Chip
         {
-            feld[5-chipsInSpalte(spalte)][spalte] = 2; // new Chip(farbe/Chip.gelb);
+            spielfeld[5-chipsInSpalte(spalte)][spalte] = new Chip(2); 
 
             if(!zugGewonnen(spalte)) {
                 rotIstDran = true;
@@ -76,14 +75,14 @@ public class VierGewinnt
         int anzahl = 0;
         for(int i=0; i<=5; i++)
         {
-            if(feld[i][spalte]==1 || feld[i][spalte]==2) // != null
+            if(spielfeld[i][spalte]!= null)
             {
                 anzahl++;
             }
         }
         return anzahl;
     }
-
+    
     public boolean zugGewonnen(int spalte)
     {
         if(vertikalGewonnen(spalte)) return true;
@@ -102,11 +101,11 @@ public class VierGewinnt
         if(chipsInSpalte(spalte) >= 4)
         {
             int reihe = 6-chipsInSpalte(spalte);
-            int farbe = feld[6-chipsInSpalte(spalte)][spalte];
-            if(feld[reihe][spalte] == farbe // if != null && Chip.getFarbe()
-            && feld[reihe+1][spalte] == farbe 
-            && feld[reihe+2][spalte] == farbe 
-            && feld[reihe+3][spalte] == farbe) return true;
+            int farbe = spielfeld[6-chipsInSpalte(spalte)][spalte].getFarbe();
+            if(spielfeld[reihe][spalte].getFarbe() == farbe 
+            && spielfeld[reihe+1][spalte].getFarbe() == farbe 
+            && spielfeld[reihe+2][spalte].getFarbe() == farbe 
+            && spielfeld[reihe+3][spalte].getFarbe() == farbe) return true;
             else return false;
         }
         else return false;
@@ -122,14 +121,19 @@ public class VierGewinnt
         int count = 0;
         int x = spalte;
         int y = 6-chipsInSpalte(spalte);
-        int farbe = feld[y][x];
+        int farbe = spielfeld[y][x].getFarbe();
         while(x>0)
         {
             x--;
         }
         while(x<=6)
         {
-            if(feld[y][x] == farbe) count++;
+            if(spielfeld[y][x]!= null)
+            {
+                if(spielfeld[y][x].getFarbe() == farbe) count++;
+                else count = 0;
+            }
+            
             else count = 0;
             if(count == 4) return true;
             x++;
@@ -147,7 +151,7 @@ public class VierGewinnt
         int count = 0;
         int y = 6-chipsInSpalte(spalte);
         int x = spalte;
-        int farbe = feld[y][x];
+        int farbe = spielfeld[y][x].getFarbe();
         while(y>0 && x<6)//solange im Feld
         {
             y--;
@@ -155,8 +159,13 @@ public class VierGewinnt
         }//x und y nehmen die Koordinaten von ganz oben rechts in der Linie des platzierten Chips an
         while(y<=5 && x>=0)//solange im Feld
         {
-            if(feld[y][x] == farbe) count++;
-            else count = 0;//wenn ein Chip nicht die richtige Farbe hat wird  count auf 0 gesetzt da somit die Reihe unterbrochen wird
+            if(spielfeld[y][x]!= null)
+            {
+                if(spielfeld[y][x].getFarbe() == farbe) count++;
+                else count = 0;
+            }
+            
+            else count = 0;
             if(count == 4) return true;//wenn 4 in einer Reihe true (spiel gewonnen)
             y++;
             x--;
@@ -174,7 +183,7 @@ public class VierGewinnt
         int count = 0;
         int y = 6-chipsInSpalte(spalte);
         int x = spalte;
-        int farbe = feld[y][x];
+        int farbe = spielfeld[y][x].getFarbe();
         while(y>0 && x>0)//solange im Feld
         {
             y--;
@@ -182,8 +191,12 @@ public class VierGewinnt
         }//x und y nehmen die Koordinaten von ganz oben links in der Linie des platzierten Chips an
         while(y<=5 && x<=6)//solange im Feld
         {
-            if(feld[y][x] == farbe) count++;
-            else count = 0;//wenn ein Chip nicht die richtige Farbe hat wird  count auf 0 gesetzt da somit die Reihe unterbrochen wird
+            if(spielfeld[y][x]!= null)
+            {
+                if(spielfeld[y][x].getFarbe() == farbe) count++;
+                else count = 0;
+            }
+            else count = 0;
             if(count == 4) return true;//wenn 4 in einer Reihe true (spiel gewonnen)
             y++;
             x++;
@@ -199,7 +212,7 @@ public class VierGewinnt
     public void feldAusgeben() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                System.out.print("" + feld[i][j]  + " ");
+                System.out.print("" + spielfeld[i][j]  + " ");
             }
             System.out.println();
         }
