@@ -57,7 +57,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         lblAktiverSpieler.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblAktiverSpieler.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         lblAktiverSpieler.setBounds(200, 60, 400, 50);
-        lblAktiverSpieler.setText("Spieler " + spiel.istAmZug() + " ist am Zug");
+        lblAktiverSpieler.setText(spiel.istAmZug());
         lblAktiverSpieler.setForeground(Color.BLACK);
         
         
@@ -167,8 +167,30 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
                 xPos = xStart; //neue Zeile, zeichnen wieder links beginnen
                 yPos += size  + yDelta; //Position für Grafik Zeile tiefer berechnen
             }
+            updateSpielStatus();
+            System.out.println("VierGewinntFeld.paintComponent();");
         }
 
+        // Spielstatus ausgeben (nächster Spieler, unentschieden)
+        public void updateSpielStatus() {
+            if(!spiel.istSpielfeldVoll()) {
+                if (spiel.spielEnde) { // wenn ein/e Spieler*in gewonnen hat, wird dies ausgegeben
+                    spielAktiv = false;
+                    lblAktiverSpieler.setForeground(Color.GREEN);
+                    lblAktiverSpieler.setText(spiel.hatGewonnen());
+                }
+                else {
+                    lblAktiverSpieler.setText(spiel.istAmZug());
+                }    
+            }
+            else {
+                spielAktiv = false;
+                lblAktiverSpieler.setForeground(Color.GREEN);
+                lblAktiverSpieler.setText("Das Spielfeld ist voll: Unentschieden!");
+            }
+        }
+        
+        
         // Wird aufgerufen bei Mausklick
         public void mouseClicked(MouseEvent e) {
             if(!spielAktiv || spiel.istAmZug().startsWith("1")) {
@@ -184,14 +206,18 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             spiel.makeMove(spalte);
             // System.out.println(spiel.anzahlChips);
             // System.out.println(spiel.feldgroesse);
+            
+            
+            // updateSpielStatus();
+            
             if(!spiel.istSpielfeldVoll()) {
                 if (spiel.zugGewonnen(spalte)) { // wenn ein/e Spieler*in gewonnen hat, wird dies ausgegeben
                     spielAktiv = false;
                     lblAktiverSpieler.setForeground(Color.GREEN);
-                    lblAktiverSpieler.setText("Spieler " + spiel.istAmZug() + " hat gewonnen");
+                    lblAktiverSpieler.setText(spiel.hatGewonnen());
                 }
                 else {
-                    lblAktiverSpieler.setText("Spieler " + spiel.istAmZug() + " ist am Zug");
+                    lblAktiverSpieler.setText(spiel.istAmZug());
                 }    
             }
             else {
@@ -199,6 +225,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
                 lblAktiverSpieler.setForeground(Color.GREEN);
                 lblAktiverSpieler.setText("Das Spielfeld ist voll: Unentschieden!");
             }
+            
         }
 
         public void mousePressed(MouseEvent e) {

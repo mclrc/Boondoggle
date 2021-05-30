@@ -14,6 +14,8 @@ public class VierGewinnt
     int rows = 6;
     int columns = 7;
     boolean gegnerIstDran;
+    boolean initialGegnerIstDran;
+    boolean spielEnde;
     int anzahlChips = 0;
 
     VierGewinntFeld feld = null;
@@ -27,7 +29,10 @@ public class VierGewinnt
     {
         spielfeld = new Chip[6][7]; 
         this.gegnerIstDran = gegnerIstDran;
+        this.initialGegnerIstDran = gegnerIstDran == true;
+        System.out.println("" + this.initialGegnerIstDran + ", " + gegnerIstDran);
         this.con = con;
+        this.spielEnde = false;
 
         con.setMsgCallback((String msg) -> this.onOpponentMessage(msg));
     }
@@ -86,7 +91,7 @@ public class VierGewinnt
                 gegnerIstDran = true;
             }
         }
-        feld.repaint();
+        feld.repaint(); // ruft VierGewinntFeld.paintComponent(); auf
         anzahlChips++;
     }
 
@@ -119,13 +124,31 @@ public class VierGewinnt
 
     public boolean zugGewonnen(int spalte)
     {
-        if(vertikalGewonnen(spalte)) return true;
-        else if(horizontalGewonnen(spalte)) return true;
-        else if(diagonalLUROGewonnen(spalte)) return true;
-        else if(diagonalRULOGewonnen(spalte)) return true;
-        else return false;
+        boolean gewonnen = false;
+        
+        if(vertikalGewonnen(spalte)) gewonnen=true;
+        else if(horizontalGewonnen(spalte)) gewonnen=true;
+        else if(diagonalLUROGewonnen(spalte)) gewonnen=true;
+        else if(diagonalRULOGewonnen(spalte)) gewonnen=true;
+        
+        if (gewonnen) {
+            this.spielEnde = gewonnen;
+        }
+        
+        return gewonnen;
     }
-
+    
+    public boolean zugGewonnen()
+    {
+        for (int i = 0; i < columns; i++) {
+            if (zugGewonnen(i)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     /**
      * Checkt, ob der platzierte Chip eine vertikale Reihe von 4 bildet
      * Autor (Emre, Tobias)
@@ -258,10 +281,23 @@ public class VierGewinnt
      */
     public String istAmZug() {
         if(gegnerIstDran) {
-            return "1 / rot";
+            return "Dein Mitspieler ist am Zug.";
         }
         else {
-            return "2 / gelb";
+            return "Du bist am Zug.";
+        }
+    }
+    
+    /**
+     * Gibt an welcher Spieler gewonnen hat
+     * Autor(Malte)
+     */
+    public String hatGewonnen() {
+        if(gegnerIstDran) {
+            return "Dein Mitspieler hat gewonnen.";
+        }
+        else {
+            return "Du hast gewonnen.";
         }
     }
 }
