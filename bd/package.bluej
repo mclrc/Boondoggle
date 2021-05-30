@@ -1,14 +1,14 @@
 #BlueJ package file
 objectbench.height=198
-objectbench.width=822
+objectbench.width=482
 package.divider.horizontal=0.6
 package.divider.vertical=0.8479228486646885
 package.editor.height=1136
-package.editor.width=716
-package.editor.x=1924
+package.editor.width=376
+package.editor.x=2434
 package.editor.y=21
 package.frame.height=1415
-package.frame.width=848
+package.frame.width=508
 package.numDependencies=0
 package.numTargets=2
 package.showExtends=true
@@ -22,7 +22,7 @@ target1.height=82
 target1.name=net
 target1.type=PackageTarget
 target1.width=120
-target1.x=140
+target1.x=160
 target1.y=110
 target2.height=82
 target2.name=vier_gewinnt

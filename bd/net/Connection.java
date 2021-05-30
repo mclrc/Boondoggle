@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.function.Consumer;
 
-class Connection {
+public class Connection {
     // Socket fuer die eigentliche Verbindung
     Socket socket = null;
 
@@ -20,8 +20,7 @@ class Connection {
 
     // Schleifenvariable fuer Listener-Thread
     private boolean isListening = false;
-    
-    private String adresse = null;
+
     /**
      * Setze den bei Empfang einer Nachricht aufzurufenden Callback
      * @param msgCallback
@@ -65,8 +64,9 @@ class Connection {
     }
 
     public String getIp()
-    {
-        
+    {   
+        if (socket != null) return socket.getLocalAddress().getHostAddress();
+        String adresse = null;
         try{
             InetAddress ip = InetAddress.getLocalHost();
             adresse = ip.getHostAddress();
@@ -112,6 +112,32 @@ class Connection {
                     }
                     catch(Exception e) { System.out.println(e); }
                 }).start();
+        }
+        catch(Exception e) { System.out.println(e); }
+    }
+
+    public void waitForConnection(int port) throws SocketException
+    {
+        // Wenn schon eine Verbindung besteht, Exception
+        if (socket != null && !socket.isClosed())
+            throw new SocketException("Connection already in use");
+
+        try
+        {
+            // Initialisiere ServerSocket
+            serverSocket = new ServerSocket(port);
+
+            // Akzeptiere Verbindung und speichere Socket
+            socket = serverSocket.accept();
+            // Extrahiere Streams
+            out = new DataOutputStream(socket.getOutputStream());
+            in = new DataInputStream(socket.getInputStream());
+
+            // Schliesse ServerSocket und gebe Listening-Port frei 
+            serverSocket.close();
+
+            // Anfangen, auf Nachrichten zu hoeren
+            listen();
         }
         catch(Exception e) { System.out.println(e); }
     }

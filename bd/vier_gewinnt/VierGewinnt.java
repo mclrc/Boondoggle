@@ -1,4 +1,6 @@
 package bd.vier_gewinnt;
+
+import bd.net.Connection;
 /**
  * Beschreiben Sie hier die Klasse vierGewinnt.
  * 
@@ -13,14 +15,27 @@ public class VierGewinnt
     int columns = 7;
     boolean rotIstDran;
     int anzahlChips = 0;
-
+    
+    Connection con;
+    
     /**
      * Konstruktor für Objekte der Klasse vierGewinnt
      */
-    public VierGewinnt()
+    public VierGewinnt(Connection con)
     {
         spielfeld = new Chip[6][7]; 
         rotIstDran = true;//Rot soll beginnen
+        this.con = con;
+        
+        con.setMsgCallback((String msg) -> {
+            System.out.println(msg);
+        });
+        
+        try {
+            con.send("hey");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**

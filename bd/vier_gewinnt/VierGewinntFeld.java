@@ -107,12 +107,6 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
 
     }
     
-    public static void main(String args[]) {
-        VierGewinnt spiel = new VierGewinnt();
-        new VierGewinntFeld(spiel);
-    }
-
-    
     public class VierGewinntPanel extends JPanel implements MouseListener
     {
         private int rows = 6; 
