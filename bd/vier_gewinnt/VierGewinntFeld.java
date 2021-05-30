@@ -28,6 +28,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
     public VierGewinntFeld(VierGewinnt spiel)
     {
         this.spiel = spiel;
+        spiel.setFeld(this);
 
         setTitle("4 wins p2p");
         setSize(width, height);
@@ -170,7 +171,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
 
         // Wird aufgerufen bei Mausklick
         public void mouseClicked(MouseEvent e) {
-            if(!spielAktiv) {
+            if(!spielAktiv || spiel.istAmZug().startsWith("1")) {
                 return;
             }
             
@@ -178,9 +179,9 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             int spalte = Math.min(columns - 1, (xPos - xStart) / (size + xDelta)); //  Spalte wird berechnet // Sonderfall bei Spalte rechts neben dem Spielfeld: wird durch Math.min abgefangen
 
             // System.out.println("mouseClicked: " + xPos + ", " + spalte); // in der Konsole wird die xPosition und die dazugehörige Spalte ausgegeben
-            spiel.chipPlatzieren(spalte); // Chip wird in der bestimmten Spalte platziert
+            // spiel.chipPlatzieren(spalte); // Chip wird in der bestimmten Spalte platziert
             // spiel.feldAusgeben();
-            
+            spiel.makeMove(spalte);
             // System.out.println(spiel.anzahlChips);
             // System.out.println(spiel.feldgroesse);
             if(!spiel.istSpielfeldVoll()) {
@@ -198,9 +199,6 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
                 lblAktiverSpieler.setForeground(Color.GREEN);
                 lblAktiverSpieler.setText("Das Spielfeld ist voll: Unentschieden!");
             }
-            
-
-            repaint(); // ruft paintComponent um den platzierten Chip darzustellen
         }
 
         public void mousePressed(MouseEvent e) {

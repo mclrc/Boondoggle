@@ -1,7 +1,7 @@
 package bd;
 
 import bd.net.Connection;
-import bd.vier_gewinnt.VierGewinnt;
+import bd.vier_gewinnt.*;
 
 /**
  * Write a description of class Main here.
@@ -13,24 +13,37 @@ public class Main
 {
     public static void connectTo(String ip, int port)
     {
-        try {
-            Connection con = new Connection();
-            con.connect(ip, port);
-            new VierGewinnt(con);
-        } catch(Exception e) {
-            System.out.println(e);
-        }
+        new Thread(() -> {
+                try {
+                    Connection con = new Connection();
+                    con.connect(ip, port);
+                    new VierGewinntFeld(new VierGewinnt(con, true));
+                } catch(Exception e) {
+                    System.out.println(e);
+                }
+            }).start();
     }
 
     public static void acceptConnection(int port)
     {
-        try {
-            Connection con = new Connection();
-            con.waitForConnection(port);
-            new VierGewinnt(con);
-        } catch(Exception e) {
-            System.out.println(e);
-        }
+        new Thread(() -> {
+                try {
+                    Connection con = new Connection();
+                    con.waitForConnection(port);
+                    new VierGewinntFeld(new VierGewinnt(con, false));
+                } catch(Exception e) {
+                    System.out.println(e);
+                }
+            }).start();
+    }
+    
+    public static void acceptConnection()
+    {
+        acceptConnection(8080);
+    }
+    public static void connectTo()
+    {
+        connectTo("127.0.0.1", 8080);
     }
 }
 

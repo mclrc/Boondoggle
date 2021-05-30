@@ -13,29 +13,48 @@ public class VierGewinnt
     int feldgroesse=6*7;
     int rows = 6;
     int columns = 7;
-    boolean rotIstDran;
+    boolean gegnerIstDran;
     int anzahlChips = 0;
-    
+
+    VierGewinntFeld feld = null;
     Connection con;
     
+
     /**
      * Konstruktor für Objekte der Klasse vierGewinnt
      */
-    public VierGewinnt(Connection con)
+    public VierGewinnt(Connection con, boolean gegnerIstDran)
     {
         spielfeld = new Chip[6][7]; 
-        rotIstDran = true;//Rot soll beginnen
+        this.gegnerIstDran = gegnerIstDran;
         this.con = con;
-        
-        con.setMsgCallback((String msg) -> {
-            System.out.println(msg);
-        });
-        
-        try {
-            con.send("hey");
-        } catch (Exception e) {
-            System.out.println(e);
+
+        con.setMsgCallback((String msg) -> this.onOpponentMessage(msg));
+    }
+    
+    public void setFeld(VierGewinntFeld feld)
+    {
+        this.feld = feld;
+    }
+
+    private void onOpponentMessage(String msg)
+    {
+        System.out.println("Received: " + msg);
+        if (!gegnerIstDran) return;
+
+        if (msg.startsWith("zug"))
+        {
+            int spalte = Integer.parseInt(msg.split(" ")[1]);
+            chipPlatzieren(spalte);
         }
+    }
+    
+    public void makeMove(int spalte)
+    {
+        try {
+            chipPlatzieren(spalte);
+            con.send("zug " + spalte);
+        } catch (Exception e) { System.out.println(e); }
     }
 
     /**
@@ -50,13 +69,13 @@ public class VierGewinnt
         {
             return;
         }
-        
-        if(rotIstDran)//wenn Rot dran ist wird ein roter Chip an dem Platz eingefuegt
+
+        if(gegnerIstDran)//wenn Rot dran ist wird ein roter Chip an dem Platz eingefuegt
         {
             spielfeld[5-chipsInSpalte(spalte)][spalte] = new Chip(1); 
-            
+
             if(!zugGewonnen(spalte)) {
-                rotIstDran = false;
+                gegnerIstDran = false;
             }
         }
         else//wenn nicht dann ein gelber Chip
@@ -64,10 +83,10 @@ public class VierGewinnt
             spielfeld[5-chipsInSpalte(spalte)][spalte] = new Chip(2); 
 
             if(!zugGewonnen(spalte)) {
-                rotIstDran = true;
+                gegnerIstDran = true;
             }
         }
-        
+        feld.repaint();
         anzahlChips++;
     }
 
@@ -79,7 +98,7 @@ public class VierGewinnt
             return true;
         }
     }
-    
+
     /**
      * Gibt die Anzahl der belegten Platze in der Spalte zurueck
      * Wird auch benutzt um die Reihe eines platzierten Chips herauszufinden
@@ -97,7 +116,7 @@ public class VierGewinnt
         }
         return anzahl;
     }
-    
+
     public boolean zugGewonnen(int spalte)
     {
         if(vertikalGewonnen(spalte)) return true;
@@ -148,7 +167,7 @@ public class VierGewinnt
                 if(spielfeld[y][x].getFarbe() == farbe) count++;
                 else count = 0;
             }
-            
+
             else count = 0;
             if(count == 4) return true;
             x++;
@@ -179,7 +198,7 @@ public class VierGewinnt
                 if(spielfeld[y][x].getFarbe() == farbe) count++;
                 else count = 0;
             }
-            
+
             else count = 0;
             if(count == 4) return true;//wenn 4 in einer Reihe true (spiel gewonnen)
             y++;
@@ -238,7 +257,7 @@ public class VierGewinnt
      * Autor(Malte, Neele)
      */
     public String istAmZug() {
-        if(rotIstDran) {
+        if(gegnerIstDran) {
             return "1 / rot";
         }
         else {

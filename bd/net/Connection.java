@@ -16,7 +16,7 @@ public class Connection {
     ServerSocket serverSocket = null;
 
     // Lambda - Wird bei Empfang einer Nachricht aufgerufen
-    private Consumer<String> msgCallback;
+    private Consumer<String> msgCallback = null;
 
     // Schleifenvariable fuer Listener-Thread
     private boolean isListening = false;
@@ -28,6 +28,7 @@ public class Connection {
      */
     public void setMsgCallback(Consumer<String> msgCallback)
     {
+        System.out.println("lambda set");
         this.msgCallback = msgCallback;
     }
 
@@ -171,7 +172,7 @@ public class Connection {
                 while (!socket.isClosed() && isListening)
                 {
                     // Nachrichten aus Stream einlesen und Callback aufrufen
-                    try { msgCallback.accept(in.readUTF()); }
+                    try { if (msgCallback != null) msgCallback.accept(in.readUTF()); }
                     catch(EOFException e) // End-of-file - Verbindung unterbrochen
                     {
                         System.out.println("Connection closed");
