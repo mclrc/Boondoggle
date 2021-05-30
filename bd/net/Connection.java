@@ -11,7 +11,7 @@ class Connection {
     // IO-Streams fuer den socket
     private DataOutputStream out = null;
     private DataInputStream in = null;
-    
+
     // ServerSocket zum annehmen von Verbindungen
     ServerSocket serverSocket = null;
 
@@ -20,7 +20,8 @@ class Connection {
 
     // Schleifenvariable fuer Listener-Thread
     private boolean isListening = false;
-
+    
+    private String adresse = null;
     /**
      * Setze den bei Empfang einer Nachricht aufzurufenden Callback
      * @param msgCallback
@@ -45,7 +46,7 @@ class Connection {
         // Wenn schon eine Verbindung besteht, Exception 
         if (socket != null && !socket.isClosed()) 
             throw new SocketException("Connection already in use");
-        
+
         // Wenn auf Anfragen gehoert wird, Exception
         else if (serverSocket != null && !serverSocket.isClosed()) 
             throw new SocketException("Currently accepting other connections");
@@ -61,6 +62,18 @@ class Connection {
             listen();
         }
         catch(Exception e) { System.out.println(e); }
+    }
+
+    public String getIp()
+    {
+        
+        try{
+            InetAddress ip = InetAddress.getLocalHost();
+            adresse = ip.getHostAddress();
+        } catch (UnknownHostException e) {
+            System.out.println(e);
+        }
+        return adresse;
     }
 
     /**
@@ -83,22 +96,22 @@ class Connection {
 
             // Seperater Thread, denn serverSocket.accept blockiert
             new Thread(() -> {
-                try
-                {
-                    // Akzeptiere Verbindung und speichere Socket
-                    socket = serverSocket.accept();
-                    // Extrahiere Streams
-                    out = new DataOutputStream(socket.getOutputStream());
-                    in = new DataInputStream(socket.getInputStream());
+                    try
+                    {
+                        // Akzeptiere Verbindung und speichere Socket
+                        socket = serverSocket.accept();
+                        // Extrahiere Streams
+                        out = new DataOutputStream(socket.getOutputStream());
+                        in = new DataInputStream(socket.getInputStream());
 
-                    // Schliesse ServerSocket und gebe Listening-Port frei 
-                    serverSocket.close();
+                        // Schliesse ServerSocket und gebe Listening-Port frei 
+                        serverSocket.close();
 
-                    // Anfangen, auf Nachrichten zu hoeren
-                    listen();
-                }
-                catch(Exception e) { System.out.println(e); }
-            }).start();
+                        // Anfangen, auf Nachrichten zu hoeren
+                        listen();
+                    }
+                    catch(Exception e) { System.out.println(e); }
+                }).start();
         }
         catch(Exception e) { System.out.println(e); }
     }
@@ -129,22 +142,22 @@ class Connection {
 
         // Listener-Thread - Denn in.readUTF blockiert
         new Thread(() -> {
-            while (!socket.isClosed() && isListening)
-            {
-                // Nachrichten aus Stream einlesen und Callback aufrufen
-                try { msgCallback.accept(in.readUTF()); }
-                catch(EOFException e) // End-of-file - Verbindung unterbrochen
+                while (!socket.isClosed() && isListening)
                 {
-                    System.out.println("Connection closed");
-                    isListening = false;
+                    // Nachrichten aus Stream einlesen und Callback aufrufen
+                    try { msgCallback.accept(in.readUTF()); }
+                    catch(EOFException e) // End-of-file - Verbindung unterbrochen
+                    {
+                        System.out.println("Connection closed");
+                        isListening = false;
+                    }
+                    catch(IOException e) // Anderer Fehler. Verbindung schliessen
+                    {
+                        System.out.println(e);
+                        close();
+                    }
                 }
-                catch(IOException e) // Anderer Fehler. Verbindung schliessen
-                {
-                    System.out.println(e);
-                    close();
-                }
-            }
-        }).start();
+            }).start();
     }
 
     /**
