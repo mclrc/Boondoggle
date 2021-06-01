@@ -3,7 +3,10 @@ package bd.net;
 import java.io.*;
 import java.net.*;
 import java.util.function.Consumer;
-
+/**
+ * @author (Moritz, Henry)
+ * @version (01.06.2021)
+ */
 public class Connection {
     // Socket fuer die eigentliche Verbindung
     Socket socket = null;
@@ -40,6 +43,7 @@ public class Connection {
      *  Port, auf dem der andere Rechner verbindungen Akzeptiert
      * @throws SocketException
      *  Tritt auf, wenn die Verbindung schon verwendet wird oder gerade auf Verbindungsanfragen hoert
+     * Driver: Moritz, Reader: Henry
      */
     public void connect(String ip, int port) throws SocketException
     {
@@ -63,10 +67,16 @@ public class Connection {
         }
         catch(Exception e) { System.out.println(e); }
     }
-
+    
+    /**
+     * Gibt die eigene IP-Adresse zurück
+     * Driver: Henry, Reader: Moritz
+     */
     public String getIp()
     {   
+        //Wenn schon eine Verbindung besteht 
         if (socket != null) return socket.getLocalAddress().getHostAddress();
+        //Die eigene IP Adresse wird gespeichert und als String zurückgegeben
         String adresse = null;
         try{
             InetAddress ip = InetAddress.getLocalHost();
@@ -83,6 +93,7 @@ public class Connection {
      *  Port, auf dem die Anfrage akzeptiert werden soll
      * @throws SocketException
      *  Tritt auf, wenn bereits eine Verbindung besteht
+     *  Driver: Moritz, Reader: Henry
      */
     public void acceptConnection(int port) throws SocketException
     {
@@ -145,6 +156,7 @@ public class Connection {
 
     /**
      * Hoere auf, Verbindungen zu Akzeptieren
+     * Driver: Moritz, Reader: Henry
      */
     public void stopAcceptingConnection()
     {
@@ -156,6 +168,9 @@ public class Connection {
         catch(IOException e) { System.out.println(e); }
     }
 
+    /**
+     * Driver: Moritz, Reader: Henry
+     */
     private void listen() throws SocketException
     {
         // Wenn keine Verbindung besteht, Exception
@@ -193,6 +208,7 @@ public class Connection {
      *  Zu sendende Nachricht
      * @throws SocketException
      *  Tritt auf, wenn keine Verbindung besteht
+     *  Driver: Henry, Reader: Moritz
      */
     public void send(String data) throws SocketException
     {
@@ -213,6 +229,7 @@ public class Connection {
 
     /**
      * Beende die Verbindung. Hoere auf, Anfragen zu akzeptieren
+     * Driver: Henry, Reader: Moritz
      */
     public void close()
     {

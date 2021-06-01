@@ -4,10 +4,10 @@ import bd.net.Connection;
 import bd.vier_gewinnt.*;
 
 /**
- * Write a description of class Main here.
+ * 
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author (Moritz, Henry)
+ * @version (01.06.2021)
  */
 public class Main
 {
