@@ -11,6 +11,8 @@ import bd.vier_gewinnt.*;
  */
 public class Main
 {
+    public final static int port = 8080;
+    
     public static void connectTo(String ip, int port)
     {
         new Thread(() -> {
@@ -39,11 +41,11 @@ public class Main
     
     public static void acceptConnection()
     {
-        acceptConnection(8080);
+        acceptConnection(port);
     }
     public static void connectTo()
     {
-        connectTo("127.0.0.1", 8080);
+        connectTo("127.0.0.1", port);
     }
 }
 

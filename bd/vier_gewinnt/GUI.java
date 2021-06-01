@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.imageio.ImageIO;
 import java.io.File;
+import bd.Main;
+import java.net.*;
 
 
 /**
@@ -19,8 +21,8 @@ import java.io.File;
  */
 public class GUI extends JFrame
 {
-    private int width = 600;
-    private int height = 450;
+    private int width = 800;
+    private int height = 455;
     private VierGewinntFeld spielfenster;
     
     /**
@@ -51,7 +53,7 @@ public class GUI extends JFrame
         JLabel lblIP = new JLabel();
         lblIP.setHorizontalAlignment(SwingConstants.CENTER);
         lblIP.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        lblIP.setText("030.361.187");//getIPAdresse() (Muss geaendert werden)
+        lblIP.setText(getIP());//getIPAdresse() (Muss geaendert werden)
         lblIP.setBounds(200, 80, 200, 50);
         lblIP.setForeground(Color.WHITE);
         
@@ -68,6 +70,7 @@ public class GUI extends JFrame
         tfMitspielerIP.setBounds(175, 220, 250, 50);
         tfMitspielerIP.setForeground(Color.WHITE);
         tfMitspielerIP.setOpaque(false);
+        tfMitspielerIP.setText("127.0.0.1");
         
         JButton bAnfrage = new JButton();
         bAnfrage.setOpaque(false);
@@ -84,12 +87,11 @@ public class GUI extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
-                //joa...
+                popup(tfMitspielerIP.getText());
             }
         });
         
         //Auf Signal/ActionListener warten
-        popup();
         
         
         background.add(lbldeineIP);
@@ -99,7 +101,18 @@ public class GUI extends JFrame
         background.add(bAnfrage);
     }
     
-    public void popup()
+    private String getIP() {
+        String ip = "";
+        try {
+            ip = InetAddress.getLocalHost().getHostAddress();    
+        }
+        catch (Exception e) {
+            System.err.println(e);
+        }
+        return ip;
+    }
+    
+    public void popup(String ip)
     {
         JLabel plbl = new JLabel();
         plbl.setText("Herausforderung von:");
@@ -107,7 +120,7 @@ public class GUI extends JFrame
         plbl.setFont(new Font("Segoe UI", Font.BOLD, 15));
         
         JLabel plbl2 = new JLabel();
-        plbl2.setText("030.361.187"); //getIPArdesse() (Muss geaendert werden)
+        plbl2.setText(ip); //getIPArdesse() (Muss geaendert werden)
         plbl2.setHorizontalAlignment(SwingConstants.CENTER);
         plbl2.setFont(new Font("Segoe UI", Font.BOLD, 15));
         
@@ -120,7 +133,7 @@ public class GUI extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
-                //joa...
+                Main.connectTo(plbl2.getText(), Main.port);
             }
         });
         
@@ -158,5 +171,9 @@ public class GUI extends JFrame
                 dlgFenster.dispose();
             }
         });
+    }
+    
+    public static void main(String[] args){
+        GUI gui = new GUI();
     }
 }

@@ -58,6 +58,12 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         lblAktiverSpieler.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         lblAktiverSpieler.setBounds(200, 60, 400, 50);
         lblAktiverSpieler.setText(spiel.istAmZug());
+        if(spiel.gegnerIstDran) {
+             setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        }
+        else {
+            setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));   
+        }
         lblAktiverSpieler.setForeground(Color.BLACK);
         
         
@@ -168,11 +174,15 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
                 yPos += size  + yDelta; //Position für Grafik Zeile tiefer berechnen
             }
             updateSpielStatus();
-            System.out.println("VierGewinntFeld.paintComponent();");
         }
 
         // Spielstatus ausgeben (nächster Spieler, unentschieden)
         public void updateSpielStatus() {
+            if(!spielAktiv || spiel.gegnerIstDran) {
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+            setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+            
             if(!spiel.istSpielfeldVoll()) {
                 if (spiel.spielEnde) { // wenn ein/e Spieler*in gewonnen hat, wird dies ausgegeben
                     spielAktiv = false;
@@ -181,6 +191,13 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
                 }
                 else {
                     lblAktiverSpieler.setText(spiel.istAmZug());
+                    
+                    if(!spielAktiv || spiel.gegnerIstDran) {
+                        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                    }
+                    else {
+                        setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));    
+                    }
                 }    
             }
             else {
@@ -193,9 +210,11 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         
         // Wird aufgerufen bei Mausklick
         public void mouseClicked(MouseEvent e) {
-            if(!spielAktiv || spiel.istAmZug().startsWith("1")) {
+            if(!spielAktiv || spiel.gegnerIstDran) {
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 return;
             }
+            setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
             
             int xPos = e.getX(); // bei Benutzung der linken Maustaste wird die x-Position gespeichert
             int spalte = Math.min(columns - 1, (xPos - xStart) / (size + xDelta)); //  Spalte wird berechnet // Sonderfall bei Spalte rechts neben dem Spielfeld: wird durch Math.min abgefangen
@@ -218,6 +237,13 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
                 }
                 else {
                     lblAktiverSpieler.setText(spiel.istAmZug());
+                    
+                    if(!spielAktiv || spiel.gegnerIstDran) {
+                        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                    }
+                    else {
+                        setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+                    }
                 }    
             }
             else {
