@@ -87,6 +87,7 @@ public class GUI extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
+                Main.acceptConnection();
                 popup(tfMitspielerIP.getText());
             }
         });
