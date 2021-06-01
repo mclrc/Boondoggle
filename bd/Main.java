@@ -47,5 +47,9 @@ public class Main
     {
         connectTo("127.0.0.1", port);
     }
+    
+    public static void main(String[] args){
+        GUI gui = new GUI();
+    }
 }
 
