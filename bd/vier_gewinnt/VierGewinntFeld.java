@@ -19,7 +19,7 @@ import java.io.File;
 public class VierGewinntFeld extends JFrame // implements ActionListener 
 {
     private int width = 800;
-    private int height = 455;
+    private int height = 464;
     private VierGewinnt spiel;
 
     /**
