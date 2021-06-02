@@ -39,7 +39,7 @@ public class GUI extends JFrame
         setResizable(false);
         
         // Hintergrundbild
-        JLabel background = new JLabel(new ImageIcon("img/Background01.png"));
+        JLabel background = new JLabel(new ImageIcon("img/Background03.png"));
         add(background);
         GridLayout grid = new GridLayout(0,1);
         background.setLayout(grid);
