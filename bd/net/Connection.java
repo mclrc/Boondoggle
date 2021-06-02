@@ -3,6 +3,7 @@ package bd.net;
 import java.io.*;
 import java.net.*;
 import java.util.function.Consumer;
+import java.util.Enumeration;
 /**
  * @author (Moritz, Henry)
  * @version (01.06.2021)
@@ -67,24 +68,29 @@ public class Connection {
         }
         catch(Exception e) { System.out.println(e); }
     }
-    
+
     /**
-     * Gibt die eigene IP-Adresse zurück
-     * Driver: Henry, Reader: Moritz
+     * Gibt die eigene (lokale) IPv4-Adresse zurück
+     * Driver: Henry & Moritz, Reader: Moritz & Henry
      */
-    public String getIp()
+    public static String getLocalIpv4()
     {   
-        //Wenn schon eine Verbindung besteht 
-        if (socket != null) return socket.getLocalAddress().getHostAddress();
-        //Die eigene IP Adresse wird gespeichert und als String zurückgegeben
-        String adresse = null;
-        try{
-            InetAddress ip = InetAddress.getLocalHost();
-            adresse = ip.getHostAddress();
-        } catch (UnknownHostException e) {
+        try {
+            Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface i = (NetworkInterface) interfaces.nextElement();
+                for (Enumeration addresses = i.getInetAddresses(); addresses.hasMoreElements();) {
+                    InetAddress addr = (InetAddress) addresses.nextElement();
+                    if (!addr.isLoopbackAddress() && !(addr instanceof Inet6Address))
+                        return addr.getHostAddress();
+                }
+            }
+        } 
+        catch (SocketException e)
+        {
             System.out.println(e);
         }
-        return adresse;
+        return null;
     }
 
     /**
