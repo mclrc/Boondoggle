@@ -93,7 +93,7 @@ public class GUI extends JFrame
             }
         });
         
-        //Auf Signal/ActionListener warten
+        
         
         
         background.add(lbldeineIP);
