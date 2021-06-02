@@ -13,11 +13,11 @@ public class Main
 {
     public final static int port = 8080;
     
-    public static void connectTo(String ip, int port)
+    public static void connectTo(String ip, int port,Connection con)
     {
         new Thread(() -> {
                 try {
-                    Connection con = new Connection();
+                    
                     con.connect(ip, port);
                     new VierGewinntFeld(new VierGewinnt(con, true));
                 } catch(Exception e) {
@@ -45,11 +45,13 @@ public class Main
     }
     public static void connectTo()
     {
-        connectTo("127.0.0.1", port);
+        Connection con = new Connection();
+        connectTo("127.0.0.1", port, con);
     }
     
     public static void main(String[] args){
-        GUI gui = new GUI();
+        Connection con = new Connection();
+        GUI gui = new GUI(con);
     }
 }
 

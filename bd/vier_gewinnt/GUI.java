@@ -28,7 +28,7 @@ public class GUI extends JFrame
     /**
      * Konstruktor für Objekte der Klasse GUI
      */
-    public GUI()
+    public GUI(Connection con)
     {
         
         
@@ -53,7 +53,7 @@ public class GUI extends JFrame
         JLabel lblIP = new JLabel();
         lblIP.setHorizontalAlignment(SwingConstants.CENTER);
         lblIP.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        lblIP.setText(getIP());//getIPAdresse() (Muss geaendert werden)
+        lblIP.setText(con.getIp());
         lblIP.setBounds(200, 80, 200, 50);
         lblIP.setForeground(Color.WHITE);
         
@@ -88,7 +88,7 @@ public class GUI extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 Main.acceptConnection(Main.port);
-                popup(tfMitspielerIP.getText());
+                popup(tfMitspielerIP.getText(), con);
             }
         });
         
@@ -102,18 +102,7 @@ public class GUI extends JFrame
         background.add(bAnfrage);
     }
     
-    private String getIP() {
-        String ip = "";
-        try {
-            ip = InetAddress.getLocalHost().getHostAddress();    
-        }
-        catch (Exception e) {
-            System.err.println(e);
-        }
-        return ip;
-    }
-    
-    public void popup(String ip)
+    public void popup(String ip, Connection con)
     {
         JLabel plbl = new JLabel();
         plbl.setText("Herausforderung von:");
@@ -121,7 +110,7 @@ public class GUI extends JFrame
         plbl.setFont(new Font("Segoe UI", Font.BOLD, 15));
         
         JLabel plbl2 = new JLabel();
-        plbl2.setText(ip); //getIPArdesse() (Muss geaendert werden)
+        plbl2.setText(ip); 
         plbl2.setHorizontalAlignment(SwingConstants.CENTER);
         plbl2.setFont(new Font("Segoe UI", Font.BOLD, 15));
         
@@ -134,7 +123,7 @@ public class GUI extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
-                Main.connectTo(plbl2.getText(), Main.port);
+                Main.connectTo(plbl2.getText(), Main.port, con);
                 // JFrame setVisible(fals);
             }
         });
@@ -175,7 +164,5 @@ public class GUI extends JFrame
         });
     }
     
-    public static void main(String[] args){
-        GUI gui = new GUI();
-    }
+    
 }
