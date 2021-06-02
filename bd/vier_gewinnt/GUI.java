@@ -54,7 +54,7 @@ public class GUI extends JFrame
         JLabel lblIP = new JLabel();
         lblIP.setHorizontalAlignment(SwingConstants.CENTER);
         lblIP.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        lblIP.setText(con.getIp());
+        lblIP.setText(con.getLocalIpv4());
         lblIP.setBounds(300, 80, 200, 50);
         lblIP.setForeground(Color.WHITE);
         
