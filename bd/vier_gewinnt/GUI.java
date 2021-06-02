@@ -128,7 +128,7 @@ public class GUI extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 Main.connectTo(plbl2.getText(), Main.port, con);
-                // JFrame setVisible(fals);
+                dispose();
             }
         });
         

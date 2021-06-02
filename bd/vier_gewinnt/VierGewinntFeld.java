@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.imageio.ImageIO;
 import java.io.File;
+import bd.Main;
 
 /**
  * Beschreiben Sie hier die Klasse VierGewinntFeld.
@@ -76,7 +77,15 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         JButton btnZurueck = new JButton("Zurück");
         btnZurueck.setBounds(10, 380, 80, 25);
         btnZurueck.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+        btnZurueck.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                Main.main(new String[0]);
+                dispose();
+            }
+        });
+        
         /* 
         btnSpielen.setBounds(220, 200, 200, 35);
         btnSpielen.setAlignmentX(Component.CENTER_ALIGNMENT);
