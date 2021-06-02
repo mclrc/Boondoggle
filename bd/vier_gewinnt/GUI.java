@@ -87,7 +87,7 @@ public class GUI extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
-                Main.acceptConnection();
+                Main.acceptConnection(Main.port);
                 popup(tfMitspielerIP.getText());
             }
         });
@@ -135,6 +135,7 @@ public class GUI extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 Main.connectTo(plbl2.getText(), Main.port);
+                // JFrame setVisible(fals);
             }
         });
         
