@@ -48,27 +48,27 @@ public class GUI extends JFrame
         lbldeineIP.setHorizontalAlignment(SwingConstants.CENTER);
         lbldeineIP.setFont(new Font("Segoe UI", Font.BOLD, 26));
         lbldeineIP.setText("Deine IP:");
-        lbldeineIP.setBounds(200, 20, 200, 50);
+        lbldeineIP.setBounds(300, 20, 200, 50);
         lbldeineIP.setForeground(Color.WHITE);
         
         JLabel lblIP = new JLabel();
         lblIP.setHorizontalAlignment(SwingConstants.CENTER);
         lblIP.setFont(new Font("Segoe UI", Font.BOLD, 26));
         lblIP.setText(con.getIp());
-        lblIP.setBounds(200, 80, 200, 50);
+        lblIP.setBounds(300, 80, 200, 50);
         lblIP.setForeground(Color.WHITE);
         
         JLabel lblMitspielerIP = new JLabel();
         lblMitspielerIP.setHorizontalAlignment(SwingConstants.CENTER);
         lblMitspielerIP.setFont(new Font("Segoe UI", Font.BOLD, 26));
         lblMitspielerIP.setText("Mitspieler IP:");
-        lblMitspielerIP.setBounds(200, 160, 200, 50);
+        lblMitspielerIP.setBounds(300, 160, 200, 50);
         lblMitspielerIP.setForeground(Color.WHITE);
         
         JTextField tfMitspielerIP = new JTextField();
         tfMitspielerIP.setHorizontalAlignment(SwingConstants.CENTER);
         tfMitspielerIP.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        tfMitspielerIP.setBounds(175, 220, 250, 50);
+        tfMitspielerIP.setBounds(275, 220, 250, 50);
         tfMitspielerIP.setForeground(Color.WHITE);
         tfMitspielerIP.setOpaque(false);
         tfMitspielerIP.setText("127.0.0.1");
@@ -82,7 +82,7 @@ public class GUI extends JFrame
         bAnfrage.setHorizontalAlignment(SwingConstants.CENTER);
         bAnfrage.setFont(new Font("Segoe UI", Font.BOLD, 26));
         bAnfrage.setText("Herausfordern");
-        bAnfrage.setBounds(175, 280, 250, 50);
+        bAnfrage.setBounds(275, 280, 250, 50);
         bAnfrage.setForeground(Color.WHITE);
         bAnfrage.addActionListener(new ActionListener()
         {
