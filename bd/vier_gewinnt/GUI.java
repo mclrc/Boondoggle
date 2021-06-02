@@ -41,7 +41,8 @@ public class GUI extends JFrame
         // Hintergrundbild
         JLabel background = new JLabel(new ImageIcon("img/Background01.png"));
         add(background);
-        background.setLayout(null);
+        GridLayout grid = new GridLayout(0,1);
+        background.setLayout(grid);
         
         JLabel lbldeineIP = new JLabel();
         lbldeineIP.setHorizontalAlignment(SwingConstants.CENTER);
@@ -100,6 +101,9 @@ public class GUI extends JFrame
         background.add(lblMitspielerIP);
         background.add(tfMitspielerIP);
         background.add(bAnfrage);
+        
+        //Action Listener zum Schließen des Spielerauswahlsfenster wenn Herausforderung angenommen fehlt
+
     }
     
     public void popup(String ip, Connection con)
@@ -156,6 +160,14 @@ public class GUI extends JFrame
         dlgFenster.setLocationRelativeTo(null);
         
         pbAblehnen.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                dlgFenster.dispose();
+            }
+        });
+        
+        pbAnnehmen.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
