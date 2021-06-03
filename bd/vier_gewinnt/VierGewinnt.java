@@ -277,7 +277,7 @@ public class VierGewinnt
 
     /**
      * Gibt an welcher Spieler gerade am Zug ist
-     * Autor(Malte, Neele)
+     * Autor(Malte)
      */
     public String istAmZug() {
         if(gegnerIstDran) {

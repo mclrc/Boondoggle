@@ -23,7 +23,6 @@ public class GUI extends JFrame
 {
     private int width = 800;
     private int height = 455;
-    private VierGewinntFeld spielfenster;
     
     /**
      * Konstruktor für Objekte der Klasse GUI
