@@ -1,7 +1,6 @@
 package bd;
 
 
-
 import bd.net.Connection;
 import bd.vier_gewinnt.*;
 
@@ -15,15 +14,18 @@ public class Main
 {
     public final static int port = 8080;
     
-    public static void connectTo(String ip, int port,Connection con)
+    public static void connectTo(String ip, int port, Connection con)
     {
         new Thread(() -> {
-                try {
-                    
+                try
+                {
                     con.connect(ip, port);
-                    new VierGewinntFeld(new VierGewinnt(con, true));
-                } catch(Exception e) {
+                    new VierGewinntFeld(new VierGewinnt(con, false));
+                }
+                catch(Exception e)
+                {
                     System.out.println(e);
+                    new GUI(new Connection());
                 }
             }).start();
     }
@@ -31,11 +33,14 @@ public class Main
     public static void acceptConnection(int port)
     {
         new Thread(() -> {
-                try {
+                try
+                {
                     Connection con = new Connection();
                     con.waitForConnection(port);
                     new VierGewinntFeld(new VierGewinnt(con, false));
-                } catch(Exception e) {
+                }
+                catch(Exception e)
+                {
                     System.out.println(e);
                 }
             }).start();
@@ -45,15 +50,21 @@ public class Main
     {
         acceptConnection(port);
     }
-    public static void connectTo()
+    public static void connectTo(String ip)
     {
         Connection con = new Connection();
-        connectTo("127.0.0.1", port, con);
+        connectTo(ip, port, con);
     }
     
-    public static void main(String[] args){
+    public static void main(String[] args)
+    {
         Connection con = new Connection();
         GUI gui = new GUI(con);
     }
+    
+    public static void testA()
+    {
+        new GUI(new Connection());
+        connectTo(Connection.getLocalIpv4());
+    }
 }
-

@@ -101,7 +101,7 @@ public class Connection {
      *  Tritt auf, wenn bereits eine Verbindung besteht
      *  Driver: Moritz, Reader: Henry
      */
-    public void acceptConnection(int port) throws SocketException
+    public void acceptConnection(int port, Consumer<String> callback) throws SocketException
     {
         // Wenn schon eine Verbindung besteht, Exception
         if (socket != null && !socket.isClosed())
@@ -127,6 +127,10 @@ public class Connection {
 
                         // Anfangen, auf Nachrichten zu hoeren
                         listen();
+                        
+                        // Remote-IP herausfinden
+                        String ip = ((Inet4Address)((InetSocketAddress)socket.getRemoteSocketAddress()).getAddress()).toString();
+                        callback.accept(ip);
                     }
                     catch(Exception e) { System.out.println(e); }
                 }).start();
@@ -270,7 +274,7 @@ public class Connection {
         b.setMsgCallback((String msg) -> System.out.println("b received: " + msg));
 
         try {
-            a.acceptConnection(4000);
+            a.acceptConnection(4000, (String ip) -> System.out.println(ip));
             b.connect("127.0.0.1", 4000);
 
             a.send("hey from a");

@@ -30,8 +30,7 @@ public class GUI extends JFrame
      */
     public GUI(Connection con)
     {
-        
-        
+        super();
         setTitle("Spielerauswahl");
         setSize(width, height);
         setLocationRelativeTo(null);
@@ -84,18 +83,7 @@ public class GUI extends JFrame
         bAnfrage.setText("Herausfordern");
         //bAnfrage.setBounds(275, 280, 250, 50);
         bAnfrage.setForeground(Color.WHITE);
-        bAnfrage.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                Main.acceptConnection(Main.port);
-                popup(tfMitspielerIP.getText(), con);
-            }
-        });
-        
-        
-        
-        
+
         background.add(lbldeineIP);
         background.add(lblIP);
         background.add(lblMitspielerIP);
@@ -104,7 +92,30 @@ public class GUI extends JFrame
         
         setVisible(true);
         //Action Listener zum Schließen des Spielerauswahlsfenster wenn Herausforderung angenommen fehlt
+        
+        bAnfrage.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                Main.connectTo(tfMitspielerIP.getText());
+            }
+        });
+        
+        Connection standbyCon = new Connection();
+        
+        try 
+        {
+            standbyCon.acceptConnection(Main.port, (String ip) -> {
+                System.out.println("Accepted connection from " + ip);
+                new VierGewinntFeld(new VierGewinnt(standbyCon, true));
+                dispose();
+            });
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
 
+        repaint();
     }
     
     public void popup(String ip, Connection con)
