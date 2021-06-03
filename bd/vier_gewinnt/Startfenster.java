@@ -117,7 +117,10 @@ public class Startfenster extends JFrame
 
         repaint();
     }
-    
+    /**
+     * Wird nicht benutzt
+     * Ein Popup-Fenster um eine Herausforderung anzunehmen
+     */
     public void popup(String ip, Connection con)
     {
         JLabel plbl = new JLabel();

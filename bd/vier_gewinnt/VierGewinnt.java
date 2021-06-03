@@ -179,10 +179,7 @@ public class VierGewinnt
         int x = spalte;
         int y = 6-chipsInSpalte(spalte);
         int farbe = spielfeld[y][x].getFarbe();
-        while(x>0)
-        {
-            x--;
-        }
+        x = 0;
         while(x<=6)
         {
             if(spielfeld[y][x]!= null)
