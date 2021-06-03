@@ -35,7 +35,6 @@ public class GUI extends JFrame
         setTitle("Spielerauswahl");
         setSize(width, height);
         setLocationRelativeTo(null);
-        
         setResizable(false);
         
         // Hintergrundbild
