@@ -98,6 +98,7 @@ public class GUI extends JFrame
             public void actionPerformed(ActionEvent e)
             {
                 Main.connectTo(tfMitspielerIP.getText());
+                dispose();
             }
         });
         
