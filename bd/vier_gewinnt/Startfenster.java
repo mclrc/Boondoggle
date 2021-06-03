@@ -19,7 +19,7 @@ import java.net.*;
  * @author (Ihr Name) 
  * @version (eine Versionsnummer oder ein Datum)
  */
-public class GUI extends JFrame
+public class Startfenster extends JFrame
 {
     private int width = 800;
     private int height = 455;
@@ -28,7 +28,7 @@ public class GUI extends JFrame
     /**
      * Konstruktor für Objekte der Klasse GUI
      */
-    public GUI(Connection con)
+    public Startfenster(Connection con)
     {
         super();
         setTitle("Spielerauswahl");

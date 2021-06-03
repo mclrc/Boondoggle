@@ -25,7 +25,7 @@ public class Main
                 catch(Exception e)
                 {
                     System.out.println(e);
-                    new GUI(new Connection());
+                    new Startfenster(new Connection());
                 }
             }).start();
     }
@@ -59,12 +59,12 @@ public class Main
     public static void main(String[] args)
     {
         Connection con = new Connection();
-        GUI gui = new GUI(con);
+        Startfenster gui = new Startfenster(con);
     }
     
     public static void testA()
     {
-        new GUI(new Connection());
+        new Startfenster(new Connection());
         connectTo(Connection.getLocalIpv4());
     }
 }
