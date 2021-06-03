@@ -35,7 +35,7 @@ public class GUI extends JFrame
         setTitle("Spielerauswahl");
         setSize(width, height);
         setLocationRelativeTo(null);
-        setVisible(true);
+        
         setResizable(false);
         
         // Hintergrundbild
@@ -102,6 +102,7 @@ public class GUI extends JFrame
         background.add(tfMitspielerIP);
         background.add(bAnfrage);
         
+        setVisible(true);
         //Action Listener zum Schließen des Spielerauswahlsfenster wenn Herausforderung angenommen fehlt
 
     }
