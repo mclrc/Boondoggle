@@ -30,14 +30,13 @@ public class Connection {
      * @param msgCallback
      *  Der neue Callback
      */
-    public void setMsgCallback(Consumer<String> msgCallback)
+    public void setMsgCallback(Consumer<String> callback)
     {
-        System.out.println("lambda set");
-        this.msgCallback = msgCallback;
+        this.msgCallback = callback;
     }
 
     /**
-     * Versuche eine Verbindung zu initiieren
+     * Versuche, eine Verbindung zu initiieren
      * @param ip
      *  IP des anderen Rechners
      * @param port
@@ -70,18 +69,18 @@ public class Connection {
     }
 
     /**
-     * Gibt die eigene (lokale) IPv4-Adresse zurück
+     * Gebe die eigene (lokale) IPv4-Adresse zurück
      * Driver: Henry & Moritz, Reader: Moritz & Henry
      */
     public static String getLocalIpv4()
     {   
         try {
-            Enumeration interfaces = NetworkInterface.getNetworkInterfaces();
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
-                NetworkInterface i = (NetworkInterface) interfaces.nextElement();
-                for (Enumeration addresses = i.getInetAddresses(); addresses.hasMoreElements();) {
-                    InetAddress addr = (InetAddress) addresses.nextElement();
-                    if (!addr.isLoopbackAddress() && !(addr instanceof Inet6Address))
+                NetworkInterface i = interfaces.nextElement();
+                for (Enumeration<InetAddress> addresses = i.getInetAddresses(); addresses.hasMoreElements();) {
+                    InetAddress addr = addresses.nextElement();
+                    if (!(addr.isLoopbackAddress() || addr instanceof Inet6Address))
                         return addr.getHostAddress();
                 }
             }
@@ -94,9 +93,11 @@ public class Connection {
     }
 
     /**
-     * Akzeptiere die naechste Verbindungsanfrage
+     * Akzeptiere die naechste Verbindungsanfrage asynchron
      * @param port
      *  Port, auf dem die Anfrage akzeptiert werden soll
+     * @param callback
+     *  Callback, der nach dem Etablieren einer Verbindung mit der IP des Remotes aufgerufen wird.
      * @throws SocketException
      *  Tritt auf, wenn bereits eine Verbindung besteht
      *  Driver: Moritz, Reader: Henry
@@ -109,35 +110,53 @@ public class Connection {
 
         try
         {
-            // Initialisiere ServerSocket
-            serverSocket = new ServerSocket(port);
+            // // Initialisiere ServerSocket
+            // serverSocket = new ServerSocket(port);
 
-            // Seperater Thread, denn serverSocket.accept blockiert
+            // // Seperater Thread, denn serverSocket.accept blockiert
             new Thread(() -> {
-                    try
-                    {
-                        // Akzeptiere Verbindung und speichere Socket
-                        socket = serverSocket.accept();
-                        // Extrahiere Streams
-                        out = new DataOutputStream(socket.getOutputStream());
-                        in = new DataInputStream(socket.getInputStream());
+            //         try
+            //         {
+            //             // Akzeptiere Verbindung und speichere Socket
+            //             socket = serverSocket.accept();
+            //             // Extrahiere Streams
+            //             out = new DataOutputStream(socket.getOutputStream());
+            //             in = new DataInputStream(socket.getInputStream());
 
-                        // Schliesse ServerSocket und gebe Listening-Port frei 
-                        serverSocket.close();
+            //             // Schliesse ServerSocket und gebe Listening-Port frei 
+            //             serverSocket.close();
 
-                        // Anfangen, auf Nachrichten zu hoeren
-                        listen();
+            //             // Anfangen, auf Nachrichten zu hoeren
+            //             listen();
                         
-                        // Remote-IP herausfinden
-                        String ip = ((Inet4Address)((InetSocketAddress)socket.getRemoteSocketAddress()).getAddress()).toString();
-                        callback.accept(ip);
-                    }
-                    catch(Exception e) { System.out.println(e); }
-                }).start();
+            //             // Remote-IP herausfinden
+            //             String ip = ((Inet4Address)((InetSocketAddress)socket.getRemoteSocketAddress()).getAddress()).toString();
+            //             callback.accept(ip);
+            //         }
+            //         catch(Exception e) { System.out.println(e); }
+                try
+                {
+                    waitForConnection(port);
+                    // Remote-IP herausfinden
+                    String ip = ((Inet4Address)((InetSocketAddress)socket.getRemoteSocketAddress()).getAddress()).toString();
+                    // Callback-aufruf
+                    callback.accept(ip);
+                }
+                catch (Exception e) { System.out.println(e); }
+            }).start();
+            
         }
         catch(Exception e) { System.out.println(e); }
     }
 
+    /**
+     * Akzeptiere die naechste Verbindungsanfrage (blockierend)
+     * @param port
+     *  Port, auf dem die Anfrage akzeptiert werden soll
+     * @throws SocketException
+     *  Tritt auf, wenn bereits eine Verbindung besteht
+     *  Driver: Moritz, Reader: Henry
+     */
     public void waitForConnection(int port) throws SocketException
     {
         // Wenn schon eine Verbindung besteht, Exception
@@ -179,6 +198,7 @@ public class Connection {
     }
 
     /**
+     * Starte, auf Nachrichten zu hoeren
      * Driver: Moritz, Reader: Henry
      */
     private void listen() throws SocketException

@@ -25,9 +25,15 @@ public class Main
                 catch(Exception e)
                 {
                     System.out.println(e);
-                    new Startfenster(new Connection());
+                    new Startfenster();
                 }
             }).start();
+    }
+    
+    public static void connectTo(String ip)
+    {
+        Connection con = new Connection();
+        connectTo(ip, port, con);
     }
 
     public static void acceptConnection(int port)
@@ -50,21 +56,16 @@ public class Main
     {
         acceptConnection(port);
     }
-    public static void connectTo(String ip)
-    {
-        Connection con = new Connection();
-        connectTo(ip, port, con);
-    }
-    
-    public static void main(String[] args)
-    {
-        Connection con = new Connection();
-        Startfenster gui = new Startfenster(con);
-    }
     
     public static void testA()
     {
-        new Startfenster(new Connection());
+        new Startfenster();
         connectTo(Connection.getLocalIpv4());
     }
+
+    public static void main(String[] args)
+    {
+        new Startfenster();
+    }
+    
 }

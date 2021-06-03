@@ -69,8 +69,6 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
         
         
         // Spierlfeld als Grafik 600x334px
-        // JLabel lblFeld = new JLabel(new ImageIcon("4gewinnt.png"));
-        // lblFeld.setBounds(100, 93, 600, 334);
         JPanel panBrett = new VierGewinntPanel(lblAktiverSpieler);
         panBrett.setBounds(261, 123, 288, 304); // Bild 288x304px
 
@@ -86,35 +84,11 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             }
         });
         
-        /* 
-        btnSpielen.setBounds(220, 200, 200, 35);
-        btnSpielen.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JButton btnEinstellungen = new JButton("Einstellungen");
-        btnEinstellungen.setBounds(220, 275, 200, 35);
-        btnEinstellungen.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JButton btnAnleitung = new JButton("Anleitung");
-        btnAnleitung.setBounds(220, 350, 200, 35);  
-        btnAnleitung.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        background.add(Box.createVerticalStrut(20));
-        background.add(lblSpielname);
-        background.add(Box.createVerticalStrut(200));
-        background.add(btnSpielen);
-        background.add(Box.createVerticalStrut(20));
-        background.add(btnEinstellungen);
-        background.add(Box.createVerticalStrut(20));
-        background.add(btnAnleitung);
-         */
-
-        
         background.add(lblSpielname);
         background.add(lblAktiverSpieler);
-        // background.add(lblFeld);
+
         background.add(panBrett);
         background.add(btnZurueck);
-        // background.add(lblSpielGewonnen);
 
         
         // Just for refresh :) Not optional!
@@ -228,15 +202,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
             int xPos = e.getX(); // bei Benutzung der linken Maustaste wird die x-Position gespeichert
             int spalte = Math.min(columns - 1, (xPos - xStart) / (size + xDelta)); //  Spalte wird berechnet // Sonderfall bei Spalte rechts neben dem Spielfeld: wird durch Math.min abgefangen
 
-            // System.out.println("mouseClicked: " + xPos + ", " + spalte); // in der Konsole wird die xPosition und die dazugehörige Spalte ausgegeben
-            // spiel.chipPlatzieren(spalte); // Chip wird in der bestimmten Spalte platziert
-            // spiel.feldAusgeben();
             spiel.makeMove(spalte);
-            // System.out.println(spiel.anzahlChips);
-            // System.out.println(spiel.feldgroesse);
-            
-            
-            // updateSpielStatus();
             
             if(!spiel.istSpielfeldVoll()) {
                 if (spiel.zugGewonnen(spalte)) { // wenn ein/e Spieler*in gewonnen hat, wird dies ausgegeben

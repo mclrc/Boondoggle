@@ -30,7 +30,6 @@ public class VierGewinnt
         spielfeld = new Chip[6][7]; 
         this.gegnerIstDran = gegnerIstDran;
         this.initialGegnerIstDran = gegnerIstDran == true;
-        System.out.println("" + this.initialGegnerIstDran + ", " + gegnerIstDran);
         this.con = con;
         this.spielEnde = false;
 
