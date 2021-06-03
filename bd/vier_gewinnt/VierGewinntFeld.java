@@ -30,7 +30,7 @@ public class VierGewinntFeld extends JFrame // implements ActionListener
     {
         this.spiel = spiel;
         spiel.setFeld(this);
-
+        
         setTitle("4 wins p2p");
         setSize(width, height);
         setLocationRelativeTo(null);
