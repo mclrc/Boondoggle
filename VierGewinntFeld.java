@@ -1,5 +1,3 @@
-package bd.vier_gewinnt;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,7 +6,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.imageio.ImageIO;
 import java.io.File;
-import bd.Main;
 
 /**
  * Beschreiben Sie hier die Klasse VierGewinntFeld.

@@ -1,11 +1,6 @@
-package bd.vier_gewinnt;
-
-import bd.net.Connection;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import bd.Main;
-
 
 /**
  * Beschreiben Sie hier die Klasse GUI.

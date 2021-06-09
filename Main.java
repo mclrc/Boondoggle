@@ -1,11 +1,4 @@
-package bd;
-
-import bd.net.Connection;
-import bd.vier_gewinnt.*;
-
 /**
- * 
- *
  * @author (Moritz, Henry)
  * @version (01.06.2021)
  */

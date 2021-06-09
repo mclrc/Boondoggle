@@ -1,6 +1,3 @@
-package bd.vier_gewinnt;
-
-import bd.net.Connection;
 /**
  * Beschreiben Sie hier die Klasse vierGewinnt.
  * 
