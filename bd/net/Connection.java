@@ -75,11 +75,14 @@ public class Connection {
     public static String getLocalIpv4()
     {   
         try {
+            // Ueber Netzwerkkarten iterieren
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
+                // Ueber Addressen der aktuellen Netzwerkkarte iterieren
                 NetworkInterface i = interfaces.nextElement();
                 for (Enumeration<InetAddress> addresses = i.getInetAddresses(); addresses.hasMoreElements();) {
                     InetAddress addr = addresses.nextElement();
+                    // Aktuelle Addresse zurueckgeben, falls sie nicht loopback oder IPv6 ist
                     if (!(addr.isLoopbackAddress() || addr instanceof Inet6Address))
                         return addr.getHostAddress();
                 }
@@ -113,38 +116,19 @@ public class Connection {
             // // Initialisiere ServerSocket
             // serverSocket = new ServerSocket(port);
 
-            // // Seperater Thread, denn serverSocket.accept blockiert
+            // // Seperater Thread, denn waitForConnection blockiert
             new Thread(() -> {
-            //         try
-            //         {
-            //             // Akzeptiere Verbindung und speichere Socket
-            //             socket = serverSocket.accept();
-            //             // Extrahiere Streams
-            //             out = new DataOutputStream(socket.getOutputStream());
-            //             in = new DataInputStream(socket.getInputStream());
+                    try
+                    {
+                        waitForConnection(port);
+                        // Remote-IP herausfinden
+                        String ip = ((Inet4Address)((InetSocketAddress)socket.getRemoteSocketAddress()).getAddress()).toString();
+                        // Callback-aufruf
+                        callback.accept(ip);
+                    }
+                    catch (Exception e) { System.out.println(e); }
+                }).start();
 
-            //             // Schliesse ServerSocket und gebe Listening-Port frei 
-            //             serverSocket.close();
-
-            //             // Anfangen, auf Nachrichten zu hoeren
-            //             listen();
-                        
-            //             // Remote-IP herausfinden
-            //             String ip = ((Inet4Address)((InetSocketAddress)socket.getRemoteSocketAddress()).getAddress()).toString();
-            //             callback.accept(ip);
-            //         }
-            //         catch(Exception e) { System.out.println(e); }
-                try
-                {
-                    waitForConnection(port);
-                    // Remote-IP herausfinden
-                    String ip = ((Inet4Address)((InetSocketAddress)socket.getRemoteSocketAddress()).getAddress()).toString();
-                    // Callback-aufruf
-                    callback.accept(ip);
-                }
-                catch (Exception e) { System.out.println(e); }
-            }).start();
-            
         }
         catch(Exception e) { System.out.println(e); }
     }

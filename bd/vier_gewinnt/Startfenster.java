@@ -90,8 +90,8 @@ public class Startfenster extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
-                Main.connectTo(tfMitspielerIP.getText());
-                dispose();
+                Main.connectTo(tfMitspielerIP.getText());//Versucht sich mit eingegebener IP-Adresse zu verbinden
+                dispose();//Fenster verschwindet
             }
         });
         
@@ -99,9 +99,12 @@ public class Startfenster extends JFrame
         
         try 
         {
+            // Die naechste Verbindungsanfrage akzeptieren
             con.acceptConnection(Main.port, (String ip) -> {
                 System.out.println("Accepted connection from " + ip);
+                // Neues Spiel mit etablierter Verbindung starten
                 new VierGewinntFeld(new VierGewinnt(con, true));
+                // Startfenster schliessen
                 dispose();
             });
         }
