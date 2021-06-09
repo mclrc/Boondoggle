@@ -4,7 +4,7 @@ package bd.vier_gewinnt;
 /**
  * Beschreiben Sie hier die Klasse Chip.
  * 
- * @author (Ihr Name) 
+ * @author (Emre, Tobias) 
  * @version (eine Versionsnummer oder ein Datum)
  */
 public class Chip

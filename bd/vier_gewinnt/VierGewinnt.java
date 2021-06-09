@@ -4,7 +4,7 @@ import bd.net.Connection;
 /**
  * Beschreiben Sie hier die Klasse vierGewinnt.
  * 
- * @author (Ihr Name) 
+ * @author (Tobias, Emre & Verfeinerung und Einbindung der Rest) 
  * @version (eine Versionsnummer oder ein Datum)
  */
 public class VierGewinnt
@@ -94,7 +94,7 @@ public class VierGewinnt
         anzahlChips++;
     }
 
-    public boolean istSpielfeldVoll() {
+    public boolean istSpielfeldVoll() {//wird für unendschieden benutzt
         if(anzahlChips < feldgroesse) {
             return false;
         } 
@@ -113,7 +113,7 @@ public class VierGewinnt
         int anzahl = 0;
         for(int i=0; i<=5; i++)
         {
-            if(spielfeld[i][spalte]!= null)
+            if(spielfeld[i][spalte]!= null)//wenn sich im Feld ein Chip befindet
             {
                 anzahl++;
             }
@@ -122,7 +122,9 @@ public class VierGewinnt
     }
 
     public boolean zugGewonnen(int spalte)
+    //Prüft verschieden Varianten, ob mit einem Spielzug das Spiel gewonnen wurde
     {
+        
         boolean gewonnen = false;
         
         if(vertikalGewonnen(spalte)) gewonnen=true;
@@ -137,27 +139,19 @@ public class VierGewinnt
         return gewonnen;
     }
     
-    public boolean zugGewonnen()
-    {
-        for (int i = 0; i < columns; i++) {
-            if (zugGewonnen(i)) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
+    
     
     /**
      * Checkt, ob der platzierte Chip eine vertikale Reihe von 4 bildet
      * Autor (Emre, Tobias)
      */
     public boolean vertikalGewonnen(int spalte)
+    //prüft 3 Reihe nach unten der Spalte des platzierten Chips
     {
         if(chipsInSpalte(spalte) >= 4)
         {
-            int reihe = 6-chipsInSpalte(spalte);
-            int farbe = spielfeld[6-chipsInSpalte(spalte)][spalte].getFarbe();
+            int reihe = 6-chipsInSpalte(spalte);//die Reihe des platzierten Chips
+            int farbe = spielfeld[reihe][spalte].getFarbe();
             if(spielfeld[reihe][spalte].getFarbe() == farbe 
             && spielfeld[reihe+1][spalte].getFarbe() == farbe 
             && spielfeld[reihe+2][spalte].getFarbe() == farbe 
@@ -173,6 +167,7 @@ public class VierGewinnt
      * Autor (Tobias, Emre)
      */
     public boolean horizontalGewonnen(int spalte)
+    //geht alle Spalten der selben Reihe des platzierten Chips durch
     {
         int count = 0;
         int x = spalte;
@@ -183,12 +178,12 @@ public class VierGewinnt
         {
             if(spielfeld[y][x]!= null)
             {
-                if(spielfeld[y][x].getFarbe() == farbe) count++;
-                else count = 0;
+                if(spielfeld[y][x].getFarbe() == farbe) count++;//wenn gleiche Farbe
+                else count = 0;//sonst count auf 0 zurückgesetzt, da Reihe unterbrochen
             }
 
             else count = 0;
-            if(count == 4) return true;
+            if(count == 4) return true;//wenn 4 in einer Reihe sind
             x++;
         }
         return false;
