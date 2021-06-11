@@ -1,6 +1,9 @@
 /**
+ * Main Klasse.
+ * Beinhaltet die Main-Methode und Methoden um sich zu verbinden und das VierGewinnt-Spiel zu starten.
+ * 
  * @author (Moritz, Henry)
- * @version (01.06.2021)
+ * @version (01.06.2021; V.4)
  */
 public class Main
 {

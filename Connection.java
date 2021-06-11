@@ -5,6 +5,8 @@ import java.net.*;
 import java.util.function.Consumer;
 import java.util.Enumeration;
 /**
+ * Sorgt fuer die P2P-Verbindung zwischen zwei Rechnern.
+ * 
  * @author (Moritz, Henry)
  * @version (01.06.2021)
  */

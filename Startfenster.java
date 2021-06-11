@@ -3,10 +3,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Beschreiben Sie hier die Klasse GUI.
+ * Die GUI des Startfensters.
+ * Sie bildet die Oberflaeche zum Verbinden zweier Spieler.
  * 
  * @author (Moritz & andere) 
- * @version (eine Versionsnummer oder ein Datum)
+ * @version (V.4)
  */
 public class Startfenster extends JFrame
 {

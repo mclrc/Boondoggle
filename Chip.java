@@ -1,6 +1,9 @@
-/*
+/**
+ * Chip-Klasse für eine objektorientierte Programmierung.
+ * Chips im VierGewinnt sind Objekte.
+ * 
  * @author (Emre, Tobias) 
- * @version (eine Versionsnummer oder ein Datum)
+ * @version (V.3)
  */
 public class Chip
 {

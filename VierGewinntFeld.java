@@ -8,13 +8,14 @@ import javax.imageio.ImageIO;
 import java.io.File;
 
 /**
- * Beschreiben Sie hier die Klasse VierGewinntFeld.
+ * Ist fuer die Oberflaeche des Spiels zustaendig.
+ * Sie besitzt außerdem den Mouse-Listener um die Klicks zu Verarbeiten.
  * 
- * @author (Ihr Name) 
- * @version (eine Versionsnummer oder ein Datum)
+ * @author (Malte) 
+ * @version (V.3)
  */
 
-public class VierGewinntFeld extends JFrame // implements ActionListener 
+public class VierGewinntFeld extends JFrame 
 {
     private int width = 800;
     private int height = 464;

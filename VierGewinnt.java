@@ -1,8 +1,9 @@
 /**
- * Beschreiben Sie hier die Klasse vierGewinnt.
+ * Die VierGewinnt-Klasse ist die Logik des Spield und ist Verantwortlich fuer alle Funktionen im Spielgeschehen
+ * Getrennt von der Oberflaeche.
  * 
  * @author (Tobias, Emre & Verfeinerung und Einbindung der Rest) 
- * @version (eine Versionsnummer oder ein Datum)
+ * @version (V.3)
  */
 public class VierGewinnt
 {
